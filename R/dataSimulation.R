@@ -51,11 +51,11 @@ for(i in mult.genes){
 rm(i)
 rm(mult.genes)
 
-# get min and max basepair of ECOLI (youe can set different ones for your data):
+# get min and max basepair of ECOLI
 min_bp <- 1
 max_bp <- 4646332 # see https://www.ncbi.nlm.nih.gov/nuccore/AP009048.1
 
-# We create a new dataframe based on the (in this case) ecoli data.
+# Create a new data frame based on the (in this case) Ecoli data.
 # This data set will be the standard form for our simulation, that is you can
 # use any other kind of data set in the beginning or construct your own (different
 # genes length etc) as long as you have the following columns that follow our
@@ -122,7 +122,7 @@ simulated_data <- parLapply(cl, 1:num_simu, function(sim_run){
   cluster.sizes.sim <- 
     rnbinom(NegBinomial_num_cluster, 
             NegBinomial_dispersion, 
-            NegBinomial_p)+1. # +1 to avoid clusters of sizes 0
+            NegBinomial_p)+1 # +1 to avoid clusters of sizes 0
   
   # number of (non)-essential genes
   num_ess_genes <- sum(cluster.sizes.sim)

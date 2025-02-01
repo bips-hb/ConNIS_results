@@ -1,4 +1,4 @@
-# Meta-Simulation Script
+# Main simulation script
 setwd("./R")
 
 library(parallel)
@@ -7,12 +7,12 @@ library(gmp)
 library(insdens)
 
 # number of unique insertion sites (IS) 
-list_unique_loci <- c(200000, 50000, 100000, 400000)
+list_unique_loci <- c(50000, 100000, 200000, 400000)
 
 # type of insertion free sections in essential genes (only uniform is available)
 ess_ORF <- "uniform"  
 # uniform parameter values U(lambda/1)
-list_lambda <- c(0.8, 0.7, 0.75, 0.85)
+list_lambda <- c(0.7, 0.75, 0.8, 0.85)
 
 if(ess_ORF == "uniform" & any(list_lambda)> 1){
   stop("STOP: for uniform lambda needs to be smaller 1")
@@ -40,8 +40,8 @@ if(distortion == "spots"){
 }
 
 
-# paramter values for the negative Binomial distribution to determine the esssential genes
-# (NegBinomial_num_cluster is the nubmer of observed clusters of essential genes)
+# paramter values for the negative Binomial distribution to determine the essential genes
+# (NegBinomial_num_cluster is the number of observed clusters of essential genes)
 list_NegBinomial_num_cluster <- 100
 list_NegBinomial_dispersion <- 1 
 list_NegBinomial_p <- 0.3 
@@ -50,7 +50,7 @@ list_NegBinomial_p <- 0.3
 list_technical_noise <- c(0, 0.02)
 
 # total proportion of trimming of genes (half of the values for the start of genes, half for the end)
-list_data_trimming <- c(0.1, 0)
+list_data_trimming <- c(0, 0.1)
 
 # number of simualtion runs per setting
 num_simu <- 100
