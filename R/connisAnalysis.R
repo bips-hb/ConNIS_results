@@ -39,9 +39,7 @@ cl <- makeCluster(nc, type="PSOCK")
 
 clusterExport(cl, 
               list("simulated_data",
-                   "csc",
                    "bc_prob_bigZ",
-                   "cluster_determiner",
                    "classification_performance",
                    "bc_freq_bigZ",
                    "ConNIS",
