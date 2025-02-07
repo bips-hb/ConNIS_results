@@ -206,7 +206,7 @@ p1_tpr_vs_precision <- ggplot(plot_data,
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
-  xlab("True positve rate")+
+  xlab("Recall")+
   theme(legend.position="bottom", 
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
@@ -422,7 +422,7 @@ p2_tpr_vs_precision <- ggplot(plot_data,
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
-  xlab("True positve rate")+
+  xlab("Recall")+
   theme(legend.position="bottom", 
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
@@ -641,7 +641,7 @@ p3_tpr_vs_precision <- ggplot(plot_data,
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
-  xlab("True positve rate")+
+  xlab("Recall")+
   theme(legend.position="bottom", 
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
@@ -861,7 +861,7 @@ p4_tpr_vs_precision <- ggplot(plot_data,
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
-  xlab("True positve rate")+
+  xlab("Recall")+
   theme(legend.position="bottom", 
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
@@ -935,60 +935,112 @@ p4_tpr_vs_precision <- ggplot(plot_data,
 # 
 # save_plot(filename = "./plots/syn_subsetsize.pdf",
 #           plot =plots_subsetsize_tpr_precision, dpi =600, base_height = 9.5*2/3, base_asp = 2/3)
+# 
+#   
+#   plot_first_line <- ggarrange(p1_rl_max_mcc + rremove("legend.title") , 
+#                                p1_setsize + rremove("legend.title") , 
+#                                p1_tpr_vs_precision + rremove("legend.title") ,
+#                         nrow = 1, ncol=3,
+#                         #align='v', 
+#                         legend = "none"
+#   ) 
+#   
+#   plot_second_line <- ggarrange(p2_rl_max_mcc + rremove("legend.title") , 
+#                                    p2_setsize + rremove("legend.title") , 
+#                                    p2_tpr_vs_precision + rremove("legend.title") ,
+#                                    nrow = 1, ncol=3,
+#                                    #align='v', 
+#                                 legend = "none"
+#   ) 
+#   
+#   plot_third_line <- ggarrange(p3_rl_max_mcc + rremove("legend.title") , 
+#                                 p3_setsize + rremove("legend.title") , 
+#                                 p3_tpr_vs_precision + rremove("legend.title") ,
+#                                 nrow = 1, ncol=3,
+#                                 #align='v', 
+#                                legend = "none"
+#   ) 
+#   
+#   plot_fourth_line <- ggarrange(p4_rl_max_mcc + rremove("legend.title") , 
+#                                 p4_setsize + rremove("legend.title") , 
+#                                 p4_tpr_vs_precision + rremove("legend.title") ,
+#                                 nrow = 1, ncol=3,
+#                                 #align='v', 
+#                                 legend = "none"
+#   ) 
+#   
+#   plot_first_line <- annotate_figure(plot_first_line, top=text_grob("         SS1: 200,000 IS and min. 75% insertion", face = "italic", size = 10))
+#   plot_second_line <- annotate_figure(plot_second_line, top=text_grob("         SS1: 400,000 IS, min. 85% insertion free and 2% noise", face = "italic", size = 10))
+#   plot_third_line <- annotate_figure(plot_third_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free and 25 cold spots", face = "italic", size = 10))
+#   plot_fourth_line <- annotate_figure(plot_fourth_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free 25 and hot spots", face = "italic", size = 10))
+#   
+#   plots_syn_results  <- 
+#     ggarrange(
+#       plot_first_line,
+#       plot_second_line,
+#       plot_third_line,
+#       plot_fourth_line,
+#       nrow = 4, ncol=1,
+#       labels=LETTERS[1:4],
+#       align='v', 
+#       common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
+#     )
+#   
+# save_plot(filename = "./plots/syn_results.pdf",
+#           plot =plots_syn_results, dpi =600, base_height = 9.5, base_asp = 3/4 )
 
-  
-  plot_first_line <- ggarrange(p1_rl_max_mcc + rremove("legend.title") , 
-                               p1_setsize + rremove("legend.title") , 
-                               p1_tpr_vs_precision + rremove("legend.title") ,
-                        nrow = 1, ncol=3,
-                        #align='v', 
-                        legend = "none"
-  ) 
-  
-  plot_second_line <- ggarrange(p2_rl_max_mcc + rremove("legend.title") , 
-                                   p2_setsize + rremove("legend.title") , 
-                                   p2_tpr_vs_precision + rremove("legend.title") ,
-                                   nrow = 1, ncol=3,
-                                   #align='v', 
-                                legend = "none"
-  ) 
-  
-  plot_third_line <- ggarrange(p3_rl_max_mcc + rremove("legend.title") , 
-                                p3_setsize + rremove("legend.title") , 
-                                p3_tpr_vs_precision + rremove("legend.title") ,
-                                nrow = 1, ncol=3,
-                                #align='v', 
-                               legend = "none"
-  ) 
-  
-  plot_fourth_line <- ggarrange(p4_rl_max_mcc + rremove("legend.title") , 
-                                p4_setsize + rremove("legend.title") , 
-                                p4_tpr_vs_precision + rremove("legend.title") ,
-                                nrow = 1, ncol=3,
-                                #align='v', 
-                                legend = "none"
-  ) 
-  
-  plot_first_line <- annotate_figure(plot_first_line, top=text_grob("         SS1: 200,000 IS and min. 75% insertion", face = "italic", size = 10))
-  plot_second_line <- annotate_figure(plot_second_line, top=text_grob("         SS1: 400,000 IS, min. 85% insertion free and 2% noise", face = "italic", size = 10))
-  plot_third_line <- annotate_figure(plot_third_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free and 25 cold spots", face = "italic", size = 10))
-  plot_fourth_line <- annotate_figure(plot_fourth_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free 25 and hot spots", face = "italic", size = 10))
-  
-  plots_syn_results  <- 
-    ggarrange(
-      plot_first_line,
-      plot_second_line,
-      plot_third_line,
-      plot_fourth_line,
-      nrow = 4, ncol=1,
-      labels=LETTERS[1:4],
-      align='v', 
-      common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-    )
-  
+plot_first_line <- ggarrange( 
+  p1_setsize + rremove("legend.title") , 
+  p1_tpr_vs_precision + rremove("legend.title") ,
+  nrow = 1, ncol=2,
+  #align='v', 
+  legend = "none"
+) 
 
-  # save_plot(filename = "./plots/syn_results.pdf",
-  #           plot =plots_syn_results, dpi =600, base_height = 9.5, base_asp = 3/4 )
+plot_second_line <- ggarrange(
+  p2_setsize + rremove("legend.title") , 
+  p2_tpr_vs_precision + rremove("legend.title") ,
+  nrow = 1, ncol=2,
+  #align='v', 
+  legend = "none"
+) 
+
+plot_third_line <- ggarrange(
+  p3_setsize + rremove("legend.title") , 
+  p3_tpr_vs_precision + rremove("legend.title") ,
+  nrow = 1, ncol=2,
+  #align='v', 
+  legend = "none"
+) 
+
+plot_fourth_line <- ggarrange(
+                              p4_setsize + rremove("legend.title") , 
+                              p4_tpr_vs_precision + rremove("legend.title") ,
+                              nrow = 1, ncol=2,
+                              #align='v', 
+                              legend = "none"
+) 
+
+save_plot(filename = "./plots/syn_results.pdf",
+          plot =plots_syn_results, dpi =600, base_height = 9.5, base_asp = 1/2 )
+
+plots_syn_results  <- 
+  ggarrange(
+    plot_first_line,
+    plot_second_line,
+    plot_third_line,
+    plot_fourth_line,
+    nrow = 4, ncol=1,
+    labels=LETTERS[1:4],
+    align='v', 
+    common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
+  )
+
+
+p1_setsize <- annotate_figure(p1_setsize, top=text_grob("SS1: 200,000 IS and min. 75% insertion-free", face = "italic", size = 10))
+p2_setsize <- annotate_figure(p2_setsize, top=text_grob("SS2: 400,000 IS, min. 85% insertion-free and 2% noise", face = "italic", size = 10))
+p3_setsize <- annotate_figure(p3_setsize, top=text_grob("SS3: 200,000 IS, min. 80% insertion-free and 25 cold spots", face = "italic", size = 10))
+p4_setsize <- annotate_figure(p4_setsize, top=text_grob("SS4: 200,000 IS, min. 80% insertion-free and 25 hot spots", face = "italic", size = 10))
   
   plots_syn_results_mcc_subsetsize <- 
     ggarrange(
@@ -1002,6 +1054,12 @@ p4_tpr_vs_precision <- ggplot(plot_data,
       align='v', 
       common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
     )
+  
+  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS1: 200,000 IS and min. 75% insertion-free", face = "italic", size = 7))
+  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS2: 400,000 IS, min. 85% insertion-free and 2% noise", face = "italic", size = 7))
+  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS3: 200,000 IS, min. 80% insertion-free and 25 cold spots", face = "italic", size = 7))
+  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS4: 200,000 IS, min. 80% insertion-free and 25 hot spots", face = "italic", size = 7))
+  
   
   plots_syn_results_tpr_vs_precision <- 
     ggarrange(
