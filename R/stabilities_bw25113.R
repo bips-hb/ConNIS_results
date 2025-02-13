@@ -92,7 +92,7 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i*1000)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -216,7 +216,7 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -340,7 +340,7 @@ out_perm_expvsgamma <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -440,7 +440,7 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -563,7 +563,7 @@ out_perm_insdens <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -679,7 +679,7 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
