@@ -48,19 +48,24 @@ all_genes_14028S <- all_genes_14028S[all_genes_14028S$locusId %in% genes_in_both
 
 original_data <- all_genes_14028S
 
+genome_length <- 4870265
+
 nc <- 50
 cl <- makeCluster(nc, type="PSOCK", outfile = "")
 
+frac_subsamples <- 0.5
 trimming_end <- trimming_start <- 0.05 
 alpha_value <- 0.05
 n_draws <- 500
 ws <- ws <- c(0.01, seq(0.05,1,0.05))
-ts <- c(seq(0.1,2, 0.1),3:12)
-rs <- c(seq(0.01,0.1, 0.01), seq(0.2,0.9,0.1), seq(0.91,0.99,0.01))
+ts <- c(1:12)
+rs <- c(seq(0.1,0.9,0.1), seq(0.91,0.99,0.01))
 
 clusterExport(cl,
               list(
                 "original_data",
+                "genome_length",
+                "frac_subsamples",
                 "all_IS",
                 "trimming_start",
                 "trimming_end",
@@ -167,7 +172,7 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
              gene.starts = gene_data$gene_start,
              gene.stops = gene_data$gene_end,
              num.ins.per.gene = gene_data$num_ins,
-             genome.length =  4641652,
+             genome.length = genome_length * frac_subsamples,
              weighting = w)
     
   })
@@ -291,7 +296,7 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
            gene.starts = gene_data$gene_start, 
            gene.stops = gene_data$gene_end, 
            num.ins.per.gene = gene_data$num_ins, 
-           genome.length =  4641652, 
+           genome.length = genome_length * frac_subsamples, 
            weighting = w)
     
   })
@@ -513,7 +518,7 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
               gene.starts = gene_data$gene_start, 
               gene.stops = gene_data$gene_end, 
               num.ins.per.gene = gene_data$num_ins, 
-              genome.length =  4641652, 
+              genome.length = genome_length * frac_subsamples, 
               weighting = w)
     
   })
@@ -752,7 +757,7 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
             gene.names = gene_data$gene, 
             gene.starts = gene_data$gene_start, 
             gene.stops = gene_data$gene_end, 
-            genome.length =  4641652, 
+            genome.length = genome_length * frac_subsamples, 
             weighting = w)
     
   })

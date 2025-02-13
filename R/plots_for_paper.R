@@ -11,19 +11,11 @@ library(ggridges)
 
 setwd("./R")
 
-# Plot real word data Ecoli, Salmonella enterica Serovar Typhimurium,
+# Plot performances real word data Ecoli, Salmonella enterica Serovar Typhimurium,
 rm(list=ls())
 source("plot_real_data.R")
 
-# Plot real word data Synpcc (Venn diagramm)
-# rm(list=ls())
-# source("plot_real_data_venn_synpcc7942.R")
-
-# Plot examples of gene-wise insertion densities for real and simulated data
-rm(list=ls())
-source("plot_real_vs_simulated_data.R")
-
-# plot for synthetic settings
+# plot performances for synthetic settings
 rm(list=ls())
 source("plot_syn.R")
 
@@ -31,5 +23,7 @@ source("plot_syn.R")
 rm(list=ls())
 source("plot_effect_weighting.R")
 
-
+# Plot examples of gene-wise insertion densities for real and simulated data
+rm(list=ls())
+source("plot_real_vs_simulated_data.R")
 

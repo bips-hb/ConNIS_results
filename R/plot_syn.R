@@ -165,7 +165,19 @@ p1_rl_max_mcc <- ggplot(
   scale_color_manual(
     values = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"))+
   xlab("MCC")+
-  xlim(0,1)
+  xlim(0,1)+
+  theme_minimal() +
+  theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
+        legend.title=element_blank(), 
+        legend.text=element_text(size=rel(0.6)),
+        strip.text = element_text(size=rel(0.6)),
+        axis.text.x=element_text(size = rel(0.8)),
+        axis.text.y=element_text(size = rel(0.8)),
+        axis.title.x = element_text(size = rel(0.6)),         
+        axis.title.y = element_text(size = rel(0.6))) +
+  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")
+
 
 
 plot_data <- results_to_analyze %>%
@@ -183,13 +195,16 @@ y_max <- 1
 
 p1_setsize <- ggplot(plot_data, 
                      aes(x=TP+FP, y=!!sym(input$metric), color=method)) +
-  geom_hline(yintercept = 0, color="black",linetype="dotted", alpha=0.5) +
+  geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
   geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7)+
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Number of genes labeled 'essential'")+
+  coord_cartesian(ylim=c(y_min,y_max))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -197,7 +212,8 @@ p1_setsize <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(y_min,y_max))
+  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")
+
 
 
 p1_tpr_vs_precision <- ggplot(plot_data, 
@@ -207,7 +223,10 @@ p1_tpr_vs_precision <- ggplot(plot_data,
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Recall")+
+  coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -215,7 +234,7 @@ p1_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(0,1), xlim=c(0,1))
+  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")
 
 
 ## Major Synthetic Setting 1 B)
@@ -383,7 +402,18 @@ p2_rl_max_mcc <- ggplot(
   scale_color_manual(
     values = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"))+
   xlab("MCC")+
-  xlim(0,1)
+  xlim(0,1)+
+  theme_minimal() +
+  theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
+        legend.title=element_blank(), 
+        legend.text=element_text(size=rel(0.6)),
+        strip.text = element_text(size=rel(0.6)),
+        axis.text.x=element_text(size = rel(0.8)),
+        axis.text.y=element_text(size = rel(0.8)),
+        axis.title.x = element_text(size = rel(0.6)),         
+        axis.title.y = element_text(size = rel(0.6))) +
+  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise")
 
 plot_data <- results_to_analyze %>%
   filter(
@@ -400,13 +430,16 @@ y_max <- 1
 
 p2_setsize <- ggplot(plot_data, 
                      aes(x=TP+FP, y=!!sym(input$metric), color=method)) +
-  geom_hline(yintercept = 0, color="black",linetype="dotted", alpha=0.5) +
+  geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
   geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7)+
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Number of genes labeled 'essential'")+
+  coord_cartesian(ylim=c(0,1))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -414,7 +447,7 @@ p2_setsize <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(y_min,y_max))
+  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise")
 
 p2_tpr_vs_precision <- ggplot(plot_data, 
                               aes(x=TPR, y=Precision, color=method)) +
@@ -423,7 +456,10 @@ p2_tpr_vs_precision <- ggplot(plot_data,
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Recall")+
+  coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -431,8 +467,7 @@ p2_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(0,1), xlim=c(0,1))
-
+  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise")
 
 ## Major Synthetic Setting 1 C)
 input <- list()
@@ -602,7 +637,18 @@ p3_rl_max_mcc <- ggplot(
   scale_color_manual(
     values = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"))+
   xlab("MCC")+
-  xlim(0,1)
+  xlim(0,1)+
+  theme_minimal() +
+  theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
+        legend.title=element_blank(), 
+        legend.text=element_text(size=rel(0.6)),
+        strip.text = element_text(size=rel(0.6)),
+        axis.text.x=element_text(size = rel(0.8)),
+        axis.text.y=element_text(size = rel(0.8)),
+        axis.title.x = element_text(size = rel(0.6)),         
+        axis.title.y = element_text(size = rel(0.6))) +
+  ggtitle("\nSS3: 200,000 IS, min. 80% insertion-free and 25 cold spots")
 
 plot_data <- results_to_analyze %>%
   filter(
@@ -619,13 +665,17 @@ y_max <- 1
 
 p3_setsize <- ggplot(plot_data, 
                      aes(x=TP+FP, y=!!sym(input$metric), color=method)) +
-  geom_hline(yintercept = 0, color="black",linetype="dotted", alpha=0.5) +
+  geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
   geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7)+
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Number of genes labeled 'essential'")+
+  ylab("MCC")+
+  coord_cartesian(ylim=c(0,1)) +
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -633,7 +683,7 @@ p3_setsize <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(y_min,y_max))
+  ggtitle("\nSS3: 200,000 IS, min. 80% insertion-free and 25 cold spots")
 
 p3_tpr_vs_precision <- ggplot(plot_data, 
                               aes(x=TPR, y=Precision, color=method)) +
@@ -642,7 +692,10 @@ p3_tpr_vs_precision <- ggplot(plot_data,
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Recall")+
+  coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -650,7 +703,7 @@ p3_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(0,1), xlim=c(0,1))
+  ggtitle("\nSS3: 200,000 IS, min. 80% insertion-free and 25 cold spots")
 
 
 ## Major Synthetic Setting 1 D)
@@ -821,7 +874,18 @@ p4_rl_max_mcc <- ggplot(
   scale_color_manual(
     values = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"))+
   xlab("MCC")+
-  xlim(0,1)
+  coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
+  theme_minimal() +
+  theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
+        legend.title=element_blank(), 
+        legend.text=element_text(size=rel(0.6)),
+        strip.text = element_text(size=rel(0.6)),
+        axis.text.x=element_text(size = rel(0.8)),
+        axis.text.y=element_text(size = rel(0.8)),
+        axis.title.x = element_text(size = rel(0.6)),         
+        axis.title.y = element_text(size = rel(0.6))) +
+  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 hot spots")
 
 
 plot_data <- results_to_analyze %>%
@@ -839,13 +903,15 @@ y_max <- 1
 
 p4_setsize <- ggplot(plot_data, 
                      aes(x=TP+FP, y=!!sym(input$metric), color=method)) +
-  geom_hline(yintercept = 0, color="black",linetype="dotted", alpha=0.5) +
+  geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
   geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7)+
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Number of genes labeled 'essential'")+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -853,7 +919,26 @@ p4_setsize <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(y_min,y_max))
+  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 hot spots")
+
+p4_setsize_window <- ggplot(plot_data, 
+                            aes(x=TP+FP, y=!!sym(input$metric), color=method)) +
+  geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
+  geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7, size=1)+
+  scale_color_manual(values =
+                       c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
+  geom_smooth(se=TRUE, size=1.5) +
+  coord_cartesian(xlim=c(200,500), ylim=c(0.65,0.95))+
+  theme_minimal() +
+  theme(legend.position="none", 
+        plot.title=element_blank(),
+        legend.title=element_blank(), 
+        legend.text=element_blank(),
+        strip.text = element_text(size=rel(2)),
+        axis.text.x=element_text(size = rel(2)),
+        axis.text.y=element_text(size = rel(2)),
+        axis.title.x = element_blank(),         
+        axis.title.y = element_blank()) 
 
 p4_tpr_vs_precision <- ggplot(plot_data, 
                               aes(x=TPR, y=Precision, color=method)) +
@@ -862,7 +947,10 @@ p4_tpr_vs_precision <- ggplot(plot_data,
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
   geom_smooth(se=TRUE) +
   xlab("Recall")+
+  coord_cartesian(ylim=c(0,1), xlim=c(0,1))+
+  theme_minimal() +
   theme(legend.position="bottom", 
+        plot.title=element_text( face='italic', size=6, hjust = 0.5),
         legend.title=element_blank(), 
         legend.text=element_text(size=rel(0.6)),
         strip.text = element_text(size=rel(0.6)),
@@ -870,178 +958,13 @@ p4_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  coord_cartesian(ylim=c(0,1), xlim=c(0,1))
+  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 hot spots")
 
 
-# plots_rl_max_mcc_precision_tpr <- ggarrange(p1_rl_max_mcc_precision_tpr + rremove("legend.title"),  
-#                                             p2_rl_max_mcc_precision_tpr + rremove("legend.title"), 
-#                                             p3_rl_max_mcc_precision_tpr + rremove("legend.title"), 
-#                                             p4_rl_max_mcc_precision_tpr + rremove("legend.title"),
-#                                             nrow = 4, ncol=1,
-#                                             align='v', labels=c(
-#                                               paste(LETTERS[1], c(""), sep=""), 
-#                                               paste(LETTERS[2], c(""), sep=""),
-#                                               paste(LETTERS[3], c(""), sep=""),
-#                                               paste(LETTERS[4], c(""), sep="")
-#                                             ),
-#                                             common.legend = T, legend = "none"
-# ) 
-# 
-# 
-# 
-# plots_subsetsize_tpr_precision  <- 
-#   ggarrange( p1_setsize + rremove("legend.title") , 
-#              p1_tpr_vs_precision + rremove("legend.title") , 
-#              p2_setsize + rremove("legend.title") , 
-#              p2_tpr_vs_precision + rremove("legend.title") ,
-#              p3_setsize + rremove("legend.title") ,
-#              p3_tpr_vs_precision + rremove("legend.title") ,
-#              p4_setsize + rremove("legend.title") ,
-#              p4_tpr_vs_precision + rremove("legend.title") ,
-#              nrow = 4, ncol=2,
-#              labels=c(LETTERS[1], "", LETTERS[2], "", LETTERS[3], "", LETTERS[4], ""),
-#              align='v', 
-#              common.legend = T, legend = "bottom"
-#   ) 
-# 
-# 
-# plots_syn_results  <- 
-#   ggarrange(
-#     p1_rl_max_mcc + rremove("legend.title") , 
-#     p1_setsize + rremove("legend.title") , 
-#     p1_tpr_vs_precision + rremove("legend.title") , 
-#     p2_rl_max_mcc + rremove("legend.title") ,
-#     p2_setsize + rremove("legend.title") ,
-#     p2_tpr_vs_precision + rremove("legend.title") ,
-#     p3_rl_max_mcc + rremove("legend.title") , 
-#     p3_setsize + rremove("legend.title") ,
-#     p3_tpr_vs_precision + rremove("legend.title") ,
-#     p4_rl_max_mcc + rremove("legend.title") , 
-#     p4_setsize + rremove("legend.title") ,
-#     p4_tpr_vs_precision + rremove("legend.title") ,
-#     nrow = 4, ncol=3,
-#     labels=c(LETTERS[1], "", "", 
-#              LETTERS[2], "", "", 
-#              LETTERS[3], "", "",
-#              LETTERS[4], "", ""
-#     ),
-#     #align='v', 
-#     common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-#   ) 
-# 
-# save_plot(filename = "./plots/syn_best_mcc.pdf",
-#           plot =plots_rl_max_mcc_precision_tpr, dpi =600, base_height = 9.5, base_asp = 1)
-# 
-# 
-# save_plot(filename = "./plots/syn_subsetsize.pdf",
-#           plot =plots_subsetsize_tpr_precision, dpi =600, base_height = 9.5*2/3, base_asp = 2/3)
-# 
-#   
-#   plot_first_line <- ggarrange(p1_rl_max_mcc + rremove("legend.title") , 
-#                                p1_setsize + rremove("legend.title") , 
-#                                p1_tpr_vs_precision + rremove("legend.title") ,
-#                         nrow = 1, ncol=3,
-#                         #align='v', 
-#                         legend = "none"
-#   ) 
-#   
-#   plot_second_line <- ggarrange(p2_rl_max_mcc + rremove("legend.title") , 
-#                                    p2_setsize + rremove("legend.title") , 
-#                                    p2_tpr_vs_precision + rremove("legend.title") ,
-#                                    nrow = 1, ncol=3,
-#                                    #align='v', 
-#                                 legend = "none"
-#   ) 
-#   
-#   plot_third_line <- ggarrange(p3_rl_max_mcc + rremove("legend.title") , 
-#                                 p3_setsize + rremove("legend.title") , 
-#                                 p3_tpr_vs_precision + rremove("legend.title") ,
-#                                 nrow = 1, ncol=3,
-#                                 #align='v', 
-#                                legend = "none"
-#   ) 
-#   
-#   plot_fourth_line <- ggarrange(p4_rl_max_mcc + rremove("legend.title") , 
-#                                 p4_setsize + rremove("legend.title") , 
-#                                 p4_tpr_vs_precision + rremove("legend.title") ,
-#                                 nrow = 1, ncol=3,
-#                                 #align='v', 
-#                                 legend = "none"
-#   ) 
-#   
-#   plot_first_line <- annotate_figure(plot_first_line, top=text_grob("         SS1: 200,000 IS and min. 75% insertion", face = "italic", size = 10))
-#   plot_second_line <- annotate_figure(plot_second_line, top=text_grob("         SS1: 400,000 IS, min. 85% insertion free and 2% noise", face = "italic", size = 10))
-#   plot_third_line <- annotate_figure(plot_third_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free and 25 cold spots", face = "italic", size = 10))
-#   plot_fourth_line <- annotate_figure(plot_fourth_line, top=text_grob("         SS2: 200,000 IS, min. 80% insertion free 25 and hot spots", face = "italic", size = 10))
-#   
-#   plots_syn_results  <- 
-#     ggarrange(
-#       plot_first_line,
-#       plot_second_line,
-#       plot_third_line,
-#       plot_fourth_line,
-#       nrow = 4, ncol=1,
-#       labels=LETTERS[1:4],
-#       align='v', 
-#       common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-#     )
-#   
-# save_plot(filename = "./plots/syn_results.pdf",
-#           plot =plots_syn_results, dpi =600, base_height = 9.5, base_asp = 3/4 )
-
-plot_first_line <- ggarrange( 
-  p1_setsize + rremove("legend.title") , 
-  p1_tpr_vs_precision + rremove("legend.title") ,
-  nrow = 1, ncol=2,
-  #align='v', 
-  legend = "none"
-) 
-
-plot_second_line <- ggarrange(
-  p2_setsize + rremove("legend.title") , 
-  p2_tpr_vs_precision + rremove("legend.title") ,
-  nrow = 1, ncol=2,
-  #align='v', 
-  legend = "none"
-) 
-
-plot_third_line <- ggarrange(
-  p3_setsize + rremove("legend.title") , 
-  p3_tpr_vs_precision + rremove("legend.title") ,
-  nrow = 1, ncol=2,
-  #align='v', 
-  legend = "none"
-) 
-
-plot_fourth_line <- ggarrange(
-                              p4_setsize + rremove("legend.title") , 
-                              p4_tpr_vs_precision + rremove("legend.title") ,
-                              nrow = 1, ncol=2,
-                              #align='v', 
-                              legend = "none"
-) 
-
-save_plot(filename = "./plots/syn_results.pdf",
-          plot =plots_syn_results, dpi =600, base_height = 9.5, base_asp = 1/2 )
-
-plots_syn_results  <- 
-  ggarrange(
-    plot_first_line,
-    plot_second_line,
-    plot_third_line,
-    plot_fourth_line,
-    nrow = 4, ncol=1,
-    labels=LETTERS[1:4],
-    align='v', 
-    common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-  )
 
 
-p1_setsize <- annotate_figure(p1_setsize, top=text_grob("SS1: 200,000 IS and min. 75% insertion-free", face = "italic", size = 10))
-p2_setsize <- annotate_figure(p2_setsize, top=text_grob("SS2: 400,000 IS, min. 85% insertion-free and 2% noise", face = "italic", size = 10))
-p3_setsize <- annotate_figure(p3_setsize, top=text_grob("SS3: 200,000 IS, min. 80% insertion-free and 25 cold spots", face = "italic", size = 10))
-p4_setsize <- annotate_figure(p4_setsize, top=text_grob("SS4: 200,000 IS, min. 80% insertion-free and 25 hot spots", face = "italic", size = 10))
-  
+
+
   plots_syn_results_mcc_subsetsize <- 
     ggarrange(
       p1_setsize,
@@ -1054,12 +977,7 @@ p4_setsize <- annotate_figure(p4_setsize, top=text_grob("SS4: 200,000 IS, min. 8
       align='v', 
       common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
     )
-  
-  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS1: 200,000 IS and min. 75% insertion-free", face = "italic", size = 7))
-  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS2: 400,000 IS, min. 85% insertion-free and 2% noise", face = "italic", size = 7))
-  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS3: 200,000 IS, min. 80% insertion-free and 25 cold spots", face = "italic", size = 7))
-  p1_tpr_vs_precision <- annotate_figure(p1_tpr_vs_precision, top=text_grob("SS4: 200,000 IS, min. 80% insertion-free and 25 hot spots", face = "italic", size = 7))
-  
+
   
   plots_syn_results_tpr_vs_precision <- 
     ggarrange(
@@ -1096,5 +1014,5 @@ p4_setsize <- annotate_figure(p4_setsize, top=text_grob("SS4: 200,000 IS, min. 8
   
   save_plot(filename = "./plots/syn_results_best_mcc.pdf",
             plot =plots_syn_best_mcc, dpi =600, base_height = 6, base_asp = 4/4 )
-  
+    
   
