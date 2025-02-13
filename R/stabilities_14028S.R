@@ -99,7 +99,7 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -172,7 +172,7 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
              gene.starts = gene_data$gene_start,
              gene.stops = gene_data$gene_end,
              num.ins.per.gene = gene_data$num_ins,
-             genome.length = genome_length * frac_subsamples,
+             genome.length = genome_length,
              weighting = w)
     
   })
@@ -223,7 +223,7 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -296,7 +296,7 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
            gene.starts = gene_data$gene_start, 
            gene.stops = gene_data$gene_end, 
            num.ins.per.gene = gene_data$num_ins, 
-           genome.length = genome_length * frac_subsamples, 
+           genome.length = genome_length, 
            weighting = w)
     
   })
@@ -347,7 +347,7 @@ out_perm_expvsgamma <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -447,7 +447,7 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -518,7 +518,7 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
               gene.starts = gene_data$gene_start, 
               gene.stops = gene_data$gene_end, 
               num.ins.per.gene = gene_data$num_ins, 
-              genome.length = genome_length * frac_subsamples, 
+              genome.length = genome_length, 
               weighting = w)
     
   })
@@ -570,7 +570,7 @@ out_perm_insdens <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -686,7 +686,7 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
   print(draw_i)
   
   set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/frac_subsamples)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -757,7 +757,7 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
             gene.names = gene_data$gene, 
             gene.starts = gene_data$gene_start, 
             gene.stops = gene_data$gene_end, 
-            genome.length = genome_length * frac_subsamples, 
+            genome.length = genome_length, 
             weighting = w)
     
   })
