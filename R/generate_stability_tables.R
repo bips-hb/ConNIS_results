@@ -82,53 +82,53 @@ stability_threshold <-
             
             if(i %in% c(3,5)){
               stab <- get_most_stable(stabilities[[i]], as.numeric(names(stabilities[[i]])), 
-                                       reverse = T)
+                                      reverse = T)
             }else{
               
-                if(i == 1){
-                  if(adjust_bin == "Benjamini-Hochberg"){
-                    stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
-                  }
-                  if(adjust_bin == "Bonferroni"){
-                    stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
-                  }
-                  else{
-                    stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
-                  }
+              if(i == 1){
+                if(adjust_bin == "Benjamini-Hochberg"){
+                  stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
+                if(adjust_bin == "Bonferroni"){
+                  stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
+                }
+                if(adjust_bin == "Bonferroni-Holm"){
+                  stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
+                }
+              }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
@@ -198,8 +198,8 @@ performances <-
   readRDS("./performance/Performance_MG1655_realWorld.RDS")
 
 adjust_bin <- "Benjamini-Hochberg"
-adjust_con <- "Bonferroni"
-adjust_geo <- "Bonferroni"
+adjust_con <- "Benjamini-Hochberg"
+adjust_geo <- "Benjamini-Hochberg"
 adjust_tn5 <- "Benjamini-Hochberg"
 
 performances_all <- 
@@ -280,43 +280,43 @@ stability_threshold <-
                 if(adjust_bin == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_bin == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
@@ -467,43 +467,43 @@ stability_threshold <-
                 if(adjust_bin == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_bin == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
@@ -652,43 +652,43 @@ stability_threshold <-
                 if(adjust_bin == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_bin == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
@@ -836,43 +836,43 @@ stability_threshold <-
                 if(adjust_bin == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_bin == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
@@ -1022,43 +1022,43 @@ stability_threshold <-
                 if(adjust_bin == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_bin == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 2){
+              else if(i == 2){
                 if(adjust_con == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_con == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_con == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 4){
+              else if(i == 4){
                 if(adjust_geo == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_geo == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_geo == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
               
-              if(i == 6){
+              else if(i == 6){
                 if(adjust_tn5 == "Benjamini-Hochberg"){
                   stab <- get_most_stable(stabilities[[i]][[1]], as.numeric(names(stabilities[[i]][[1]])))
                 }
                 if(adjust_tn5 == "Bonferroni"){
                   stab <- get_most_stable(stabilities[[i]][[2]], as.numeric(names(stabilities[[i]][[2]])))
                 }
-                else{
+                if(adjust_tn5 == "Bonferroni-Holm"){
                   stab <- get_most_stable(stabilities[[i]][[3]], as.numeric(names(stabilities[[i]][[3]])))
                 }
               }
