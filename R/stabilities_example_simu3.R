@@ -20,20 +20,23 @@ all_IS <- tibble(pos=simulated_data[[random_sim_run]]$observed_all_unique_loci)
   
 
 original_data <- tnseq_data
+genome_length <- 4646332
 
 nc <- 50
 cl <- makeCluster(nc, type="PSOCK", outfile = "")
 
+frac_subsample <- 0.5
 trimming_end <- trimming_start <- 0.05 
 alpha_value <- 0.05
 n_draws <- 500
 ws <- ws <- c(0.01, seq(0.05,1,0.05))
-ts <- c(seq(0.1,2, 0.1),3:12)
-rs <- c(seq(0.01,0.1, 0.01), seq(0.2,0.9,0.1), seq(0.91,0.99,0.01))
+ts <- c(1:12)
+rs <- c(seq(0.1,0.9,0.1), seq(0.91,0.99,0.01))
 
 clusterExport(cl,
               list(
                 "original_data",
+                "frac_subsample",
                 "all_IS",
                 "trimming_start",
                 "trimming_end",
@@ -62,12 +65,12 @@ clusterEvalQ(cl, {
 
 
 # Stability Binomial
-out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_binomial <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -140,7 +143,7 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
              gene.starts = gene_data$gene_start,
              gene.stops = gene_data$gene_end,
              num.ins.per.gene = gene_data$num_ins,
-             genome.length =  4641652,
+             genome.length = genome_length,
              weighting = w)
     
   })
@@ -165,33 +168,69 @@ out_perm_binomial <- parLapply(cl, 1:n_draws, function(draw_i){
       )
     ] <- 1
     
-    est_ess_ben_hoch
+    
     
     est_ess_bon <- as.numeric(pvalues <= alpha_value/length(pvalues))
-    est_ess_bon
+    
+
+    
+   est_ess_bon_holm <- rep(0, length(sorted_pvalues))
+        est_ess_bon_holm[
+          as.numeric(
+            names(
+              sorted_pvalues[
+                1:min(seq_along(sorted_pvalues)[
+                  sorted_pvalues > alpha_value/(length(sorted_pvalues)-seq_along(sorted_pvalues)+1)
+                ]
+                )-1
+              ]
+            )
+          )
+        ] <- 1
+
+    list(
+      est_ess_ben_hoch = est_ess_ben_hoch,
+      est_ess_bon = est_ess_bon,
+      est_ess_bon_holm = est_ess_bon_holm
+    )    
+
   })
   
   est_binomial
   
 })
 
-stability_binomial <- sapply(seq_along(ws), function(j){
-  a <- lapply(out_perm_binomial, function(i){i[[j]]})
-  
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
-  
+stability_binomial <- lapply(1:3, function(k){
+  out <- sapply(seq_along(ws), function(j){
+
+    a <- lapply(out_perm_binomial, function(i){i[[j]][[k]]})
+    
+    sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
+    
+  })
+
+  names(out) <- ws
+  out 
+
 })
+
+names(stability_binomial) <- c(
+  "stabilities_benhoch",
+  "stabilities_bon",
+  "stabilities_bonholm"
+)
+
 
 saveRDS(out_perm_binomial, "./results/subsamples_binomial_example_simu3.RDS")
 
 
 # stability ConNIS
-out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_connis <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -264,7 +303,7 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
            gene.starts = gene_data$gene_start, 
            gene.stops = gene_data$gene_end, 
            num.ins.per.gene = gene_data$num_ins, 
-           genome.length =  4641652, 
+           genome.length = genome_length, 
            weighting = w)
     
   })
@@ -275,47 +314,82 @@ out_perm_connis <- parLapply(cl, 1:n_draws, function(draw_i){
     
     names(pvalues) <- seq_along(pvalues)
     sorted_pvalues <- sort(pvalues)
-    # 
-    #   est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
-    #   est_ess_ben_hoch[
-    #     as.numeric(
-    #       names(
-    #         pvalues[
-    #           pvalues <= max(
-    #             sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
-    #           )
-    #         ]
-    #       )
-    #     )
-    #   ] <- 1
-    # 
-    #   est_ess_ben_hoch
+    
+    est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
+    est_ess_ben_hoch[
+      as.numeric(
+        names(
+          pvalues[
+            pvalues <= max(
+              sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
+            )
+          ]
+        )
+      )
+    ] <- 1
+    
+    
     
     est_ess_bon <- as.numeric(pvalues <= alpha_value/length(pvalues))
-    est_ess_bon
+    
+
+    
+   est_ess_bon_holm <- rep(0, length(sorted_pvalues))
+        est_ess_bon_holm[
+          as.numeric(
+            names(
+              sorted_pvalues[
+                1:min(seq_along(sorted_pvalues)[
+                  sorted_pvalues > alpha_value/(length(sorted_pvalues)-seq_along(sorted_pvalues)+1)
+                ]
+                )-1
+              ]
+            )
+          )
+        ] <- 1
+
+    list(
+      est_ess_ben_hoch = est_ess_ben_hoch,
+      est_ess_bon = est_ess_bon,
+      est_ess_bon_holm = est_ess_bon_holm
+    )    
+
   })
   
   est_connis
   
 })
 
-stability_connis <- sapply(seq_along(ws), function(j){
-  a <- lapply(out_perm_connis, function(i){i[[j]]})
-  
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
-  
+stability_connis <- lapply(1:3, function(k){
+  out <- sapply(seq_along(ws), function(j){
+
+    a <- lapply(out_perm_connis, function(i){i[[j]][[k]]})
+    
+    sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
+    
+  })
+
+  names(out) <- ws
+  out 
+
 })
+
+names(stability_connis) <- c(
+  "stabilities_benhoch",
+  "stabilities_bon",
+  "stabilities_bonholm"
+)
 
 saveRDS(out_perm_connis, "./results/subsamples_connis_example_simu3.RDS")
 
 
 # stability Exp. vs Gamma
-out_perm_expvsgamma <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_expvsgamma <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -402,20 +476,22 @@ out_perm_expvsgamma <- parLapply(cl, 1:n_draws, function(draw_i){
 stability_expvsgamma <- sapply(seq_along(ts), function(j){
   a <- lapply(out_perm_expvsgamma, function(i){i[[j]]})
   
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
+  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
   
 })
+
+names(stability_expvsgamma) <- ts
 
 saveRDS(out_perm_expvsgamma, "./results/subsamples_expvsgamma_example_simu3.RDS")
 
 
 # stability Geometric
-out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_geometric <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -486,7 +562,7 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
               gene.starts = gene_data$gene_start, 
               gene.stops = gene_data$gene_end, 
               num.ins.per.gene = gene_data$num_ins, 
-              genome.length =  4641652, 
+              genome.length = genome_length, 
               weighting = w)
     
   })
@@ -498,23 +574,44 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
     names(pvalues) <- seq_along(pvalues)
     sorted_pvalues <- sort(pvalues)
     
-    # est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
-    # est_ess_ben_hoch[
-    #   as.numeric(
-    #     names(
-    #       pvalues[
-    #         pvalues <= max(
-    #           sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
-    #         )
-    #       ]
-    #     )
-    #   )
-    # ] <- 1
-    # 
-    # est_ess_ben_hoch
+    est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
+    est_ess_ben_hoch[
+      as.numeric(
+        names(
+          pvalues[
+            pvalues <= max(
+              sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
+            )
+          ]
+        )
+      )
+    ] <- 1
+    
+    
     
     est_ess_bon <- as.numeric(pvalues <= alpha_value/length(pvalues))
-    est_ess_bon
+    
+
+    
+   est_ess_bon_holm <- rep(0, length(sorted_pvalues))
+        est_ess_bon_holm[
+          as.numeric(
+            names(
+              sorted_pvalues[
+                1:min(seq_along(sorted_pvalues)[
+                  sorted_pvalues > alpha_value/(length(sorted_pvalues)-seq_along(sorted_pvalues)+1)
+                ]
+                )-1
+              ]
+            )
+          )
+        ] <- 1
+
+    list(
+      est_ess_ben_hoch = est_ess_ben_hoch,
+      est_ess_bon = est_ess_bon,
+      est_ess_bon_holm = est_ess_bon_holm
+    )    
     
   })
   
@@ -522,23 +619,34 @@ out_perm_geometric <- parLapply(cl, 1:n_draws, function(draw_i){
   
 })
 
-stability_geometric <- sapply(seq_along(ws), function(j){
-  a <- lapply(out_perm_geometric, function(i){i[[j]]})
-  
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
-  
+stability_geometric <- lapply(1:3, function(k){
+  out <- sapply(seq_along(ws), function(j){
+
+    a <- lapply(out_perm_geometric, function(i){i[[j]][[k]]})
+    
+    sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
+    
+  })
+  names(out) <- ws
+  out 
 })
+
+names(stability_geometric) <- c(
+  "stabilities_benhoch",
+  "stabilities_bon",
+  "stabilities_bonholm"
+)
 
 saveRDS(out_perm_geometric, "./results/subsamples_geometric_example_simu3.RDS")
 
 
 # stability InsDens
-out_perm_insdens <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_insdens <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -641,20 +749,22 @@ out_perm_insdens <- parLapply(cl, 1:n_draws, function(draw_i){
 stability_insdens <- sapply(seq_along(rs), function(j){
   a <- lapply(out_perm_insdens, function(i){i[[j]]})
   
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
+  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
   
 })
+
+names(stability_insdens) <- rs
 
 saveRDS(out_perm_insdens, "./results/subsamples_insdens_example_simu3.RDS")
 
 
 # stability Tn5Gaps
-out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
+out_perm_tn5gaps <- parLapplyLB(cl, 1:n_draws, function(draw_i){
   
   print(draw_i)
   
-  set.seed(draw_i)
-  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)/2)))))
+  set.seed(draw_i + 33333)
+  all_IS_perm <- tibble(pos=sort(as.numeric(sample(unlist(all_IS), floor(nrow(all_IS)*frac_subsample)))))
   
   gene_data <- lapply(1:nrow(original_data), function(i){
     
@@ -725,7 +835,7 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
             gene.names = gene_data$gene, 
             gene.starts = gene_data$gene_start, 
             gene.stops = gene_data$gene_end, 
-            genome.length =  4641652, 
+            genome.length = genome_length, 
             weighting = w)
     
   })
@@ -737,35 +847,70 @@ out_perm_tn5gaps <- parLapply(cl, 1:n_draws, function(draw_i){
     names(pvalues) <- seq_along(pvalues)
     sorted_pvalues <- sort(pvalues)
     
-    # est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
-    # est_ess_ben_hoch[
-    #   as.numeric(
-    #     names(
-    #       pvalues[
-    #         pvalues <= max(
-    #           sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
-    #         )
-    #       ]
-    #     )
-    #   )
-    # ] <- 1
-    # 
-    # est_ess_ben_hoch
+    est_ess_ben_hoch <- rep(0, length(sorted_pvalues))
+    est_ess_ben_hoch[
+      as.numeric(
+        names(
+          pvalues[
+            pvalues <= max(
+              sorted_pvalues[sorted_pvalues <= seq_along(sorted_pvalues)/length(sorted_pvalues)*alpha_value]
+            )
+          ]
+        )
+      )
+    ] <- 1
+    
+    
     
     est_ess_bon <- as.numeric(pvalues <= alpha_value/length(pvalues))
-    est_ess_bon
+    
+
+    
+   est_ess_bon_holm <- rep(0, length(sorted_pvalues))
+        est_ess_bon_holm[
+          as.numeric(
+            names(
+              sorted_pvalues[
+                1:min(seq_along(sorted_pvalues)[
+                  sorted_pvalues > alpha_value/(length(sorted_pvalues)-seq_along(sorted_pvalues)+1)
+                ]
+                )-1
+              ]
+            )
+          )
+        ] <- 1
+
+    list(
+      est_ess_ben_hoch = est_ess_ben_hoch,
+      est_ess_bon = est_ess_bon,
+      est_ess_bon_holm = est_ess_bon_holm
+    )    
+
   })
   
   est_tn5gaps
   
 })
 
-stability_tn5gaps <- sapply(seq_along(ws), function(j){
-  a <- lapply(out_perm_tn5gaps, function(i){i[[j]]})
-  
-  sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0, na.rm=T)
-  
+stability_tn5gaps <- lapply(1:3, function(k){
+  out <- sapply(seq_along(ws), function(j){
+
+    a <- lapply(out_perm_tn5gaps, function(i){i[[j]][[k]]})
+    
+    sum((Reduce("+", a)/n_draws)*(1-Reduce("+", a)/n_draws), na.rm=T)/sum(Reduce("+", a)>0)
+    
+  })
+
+  names(out) <- ws
+  out 
+
 })
+
+names(stability_tn5gaps) <- c(
+  "stabilities_benhoch",
+  "stabilities_bon",
+  "stabilities_bonholm"
+)
 
 saveRDS(out_perm_tn5gaps, "./results/subsamples_tn5gaps_example_simu3.RDS")
 
@@ -790,12 +935,6 @@ names(stabilities) <-
     "stability_insdens",
     "stability_tn5gaps")
 
-names(stabilities[[1]]) <- as.character(ws)
-names(stabilities[[2]]) <- as.character(ws)
-names(stabilities[[3]]) <- as.character(ts)
-names(stabilities[[4]]) <- as.character(ws)
-names(stabilities[[5]]) <- as.character(rs)
-names(stabilities[[6]]) <- as.character(ws)
 
 
 saveRDS(stabilities, "./performance/stabilities_example_simu3.RDS")
