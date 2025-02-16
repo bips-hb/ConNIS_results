@@ -37,6 +37,7 @@ clusterExport(cl,
               list(
                 "original_data",
                 "frac_subsample",
+                "genome_length",
                 "all_IS",
                 "trimming_start",
                 "trimming_end",

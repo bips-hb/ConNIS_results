@@ -7,19 +7,19 @@ library(gmp)
 library(insdens)
 
 # number of unique insertion sites (IS) 
-list_unique_loci <- c(50000, 100000, 200000, 400000)
+list_unique_loci <- 400000#c(50000, 100000, 200000, 400000)
 
 # type of insertion free sections in essential genes (only uniform is available)
 ess_ORF <- "uniform"  
 # uniform parameter values U(lambda/1)
-list_lambda <- c(0.7, 0.75, 0.8, 0.85)
+list_lambda <- 0.85#c(0.7, 0.75, 0.8, 0.85)
 
 if(ess_ORF == "uniform" & any(list_lambda)> 1){
   stop("STOP: for uniform lambda needs to be smaller 1")
 }
 
 # determination which simulation setting to use
-distortion <- "spots" # "sin"  
+distortion <- "sin" #"spots" # "sin"  
 
 # sin scaling values and wave length for simualtion setting 1 (SS1)
 list_sine_scaling_factor <- 1.3
@@ -47,10 +47,10 @@ list_NegBinomial_dispersion <- 1
 list_NegBinomial_p <- 0.3 
 
 # unique IS as technical noise (number of unique IS times a technical noise value) 
-list_technical_noise <- c(0, 0.02)
+list_technical_noise <- 0.02# c(0, 0.02)
 
 # total proportion of trimming of genes (half of the values for the start of genes, half for the end)
-list_data_trimming <- c(0, 0.1)
+list_data_trimming <- 0.1#c(0, 0.1)
 
 # number of simualtion runs per setting
 num_simu <- 100
