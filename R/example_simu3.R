@@ -582,6 +582,6 @@ performance_all <-
 performance_all$trimming_start <- trimming_start
 performance_all$trimming_end <- trimming_end
 
-saveRDS(performances_all, file="./performance/Performance_example_simu3.RDS")
+saveRDS(performance_all, file="./performance/Performance_example_simu3.RDS")
 
 
