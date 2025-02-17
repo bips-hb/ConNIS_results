@@ -756,8 +756,8 @@ performances <-
   readRDS("./performance/Performance_example_simu2.RDS")
 
 adjust_bin <- "Benjamini-Hochberg"
-adjust_con <- "Bonferroni-Holm"
-adjust_geo <- "Bonferroni-Holm"
+adjust_con <- "Benjamini-Hochberg"
+adjust_geo <- "Benjamini-Hochberg"
 adjust_tn5 <- "Benjamini-Hochberg"
 
 performances_all <- 
@@ -942,8 +942,8 @@ performances <-
   readRDS("./performance/Performance_example_simu3.RDS")
 
 adjust_bin <- "Benjamini-Hochberg"
-adjust_con <- "Bonferroni-Holm"
-adjust_geo <- "Bonferroni-Holm"
+adjust_con <- "Benjamini-Hochberg"
+adjust_geo <- "Benjamini-Hochberg"
 adjust_tn5 <- "Benjamini-Hochberg"
 
 performances_all <- 
