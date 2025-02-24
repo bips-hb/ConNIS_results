@@ -1,7 +1,7 @@
 # Plots for the effect of weighting
 
-selected_method <- "ConNIS"
-selected_correction <- "Bonferroni-Holm"
+selected_method <- "Tn5Gaps"
+selected_correction <- "Benjamini-Hochberg"
 
 performances_14028S <- 
   readRDS("./performance/Performance_14028S_realWorld.RDS")
@@ -108,7 +108,7 @@ FNR_vs_FPR <- ggplot(FNR_plot_data,
                      aes(x=FNR, y=FDR, color=dataset, label=weighting)) +
   geom_point(alpha=1) +
   geom_line()+
-  scale_color_manual(values = c("#1b9e77", "#d95f02", "#7570b3"))+
+  scale_color_manual(values = c("#38CCFF", "#FFD850", "#E914B6"))+
   geom_label(size=2, nudge_y = 0.001, nudge_x = 0.03, show.legend = FALSE) +
   theme(legend.position="bottom", 
         legend.title=element_blank()) +
@@ -120,10 +120,10 @@ FNR_vs_MCC <- ggplot(FNR_plot_data,
   geom_point(alpha=1) +
   geom_line()+
   scale_color_manual(values =
-                       c("#1b9e77", "#d95f02", "#7570b3"))+
+                       c("#38CCFF", "#FFD850", "#E914B6"))+
   geom_label(size=2, nudge_y = 0.025, nudge_x = -0.02, show.legend = FALSE) +
   theme(legend.position="bottom", 
-        legend.title=element_blank()) +
+        legend.title=element_blank(),) +
   guides(fill=guide_legend(nrow=1,byrow=FALSE)) + 
   coord_cartesian(xlim=c(0,1), ylim=c(0,1))
 
