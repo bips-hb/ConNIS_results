@@ -62,6 +62,7 @@ subsample_sizes <- c(50000, 100000, 200000, 400000)
 # use different weights and psoterior probability thresholds r
 weights <- seq(0.1, 1, 0.1)
 post.prob.thresholds <- c(seq(0.1, 0.9, 0.1), 0.99)
+lof2_thresholds <- 2:12
 
 # start lapply loop over subsample sizes
 subsample_results <- lapply(subsample_sizes, function(subsample_size){
@@ -110,6 +111,17 @@ subsample_results <- lapply(subsample_sizes, function(subsample_size){
     out
   })
 
+
+  print(paste("Start ExpVsGamma at", Sys.time() ))
+  results_ExpVsGamma <- lapply(lof2_thresholds, function(t){
+
+    out <- ExpVsGamma(gene.names = gene_data$gene,
+               gene.starts = gene_data$start,
+               gene.stops = gene_data$end,
+               num.ins.per.gene = gene_data$num_IS_SUBSAMPLE,
+               log2threshold = t)
+  })
+
   print(paste("Start Geometric at", Sys.time() ))
   results_Geometric <- mclapply(X = weights,mc.cores = detectCores(), FUN = function(w){
 
@@ -126,6 +138,42 @@ subsample_results <- lapply(subsample_sizes, function(subsample_size){
   })
 
 
+  # InsDens
+  print(paste("Start InsDens at", Sys.time() ))
+
+  ins_densities_per_gene <-
+    gene_data$num_IS_SUBSAMPLE /
+    (gene_data$end-gene_data$start+1)
+
+  insdens_data <- tibble(gene = gene_data$gene,
+           insdens = ins_densities_per_gene)
+
+  # InsDens does not work if insertion density is zero
+  insdens_data$insdens[insdens_data$insdens == 0] <- 0.0000001
+
+
+  filenname <- "./tmpData/MG1655_insdens.csv"
+  write.csv(x = insdens_data,
+            file= filenname,
+            row.names = F)
+
+  mcmc_out <- NULL
+
+  mcmc_out <-
+    post_prob(
+      file_path = filenname,
+      print_prop_sd = T,
+      print_it = T)
+
+  results_InsDens <- lapply(post.prob.thresholds, function(r){
+
+    est_ess_insdens <- as.numeric(mcmc_out[[1]][,2] >= r)
+
+    tibble(gene = gene_data$gene,
+           essential = est_ess_insdens,
+           posterior_prob = r)
+
+  })
 
   print(paste("Start Tn5Gaps at", Sys.time() ))
   results_Tn5Gaps <- mclapply(X = weights,mc.cores = detectCores(), FUN = function(w){
@@ -141,14 +189,16 @@ subsample_results <- lapply(subsample_sizes, function(subsample_size){
     out
   })
 
-  list(results_Binomial = results_Binomial,
-       results_ConNIS = results_ConNIS,
-       results_Geometric = results_Geometric,
-       results_Tn5Gaps = results_Tn5Gaps)
+    list(results_Binomial = results_Binomial,
+         results_ConNIS = results_ConNIS,
+         results_ExpVsGamma = results_ExpVsGamma,
+         results_Geometric = results_Geometric,
+         results_InsDens = results_InsDens,
+         results_Tn5Gaps = results_Tn5Gaps)
 
 })
 # save results
-saveRDS(subsample_results, file="./results/Results_semisyn_BW25113.RDS")
+saveRDS(subsample_results, file="./performance/Results_semisyn_BW25113.RDS")
 
 
 # extract for each subsample size(i), each method (j) and each tuning
@@ -192,6 +242,28 @@ semi_syn_performances <- lapply(seq_along(subsample_sizes), function(i){
     }else if(names(data_subsample_size[j]) == "results_InsDens"){
 
       method <- "InsDens"
+
+      out <- lapply(data_subsample_size_method, function(k){
+
+        est_ess_genes <- k$gene[k$essential == 1 ]
+
+        out <- classification_performance(
+          as.numeric(gene_data$gene %in% est_ess_genes),
+          as.numeric(gene_data$gene %in% ref_ess_gene))
+
+        out$tuning <- as.numeric(k[1,3])
+        out$method<- method
+        out$subsample_size <- subsample_size
+        out
+
+      })
+
+      out <- do.call(rbind, out)
+      out
+
+    }else if(names(data_subsample_size[j]) == "results_expvsgamma"){
+
+      method <- "ExpVsGamma"
 
       out <- lapply(data_subsample_size_method, function(k){
 

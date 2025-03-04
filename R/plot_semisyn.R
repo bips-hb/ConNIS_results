@@ -74,8 +74,22 @@ plots <- lapply(1:nrow(best_MCCs), function(i){
     all_results_per_subsample_and_method[
       all_results_per_subsample_and_method[,3] == best_MCCs[i,]$tuning,]
 
-  est_ess_genes <- results_optimal_tuning$gene[
-    p.adjust(results_optimal_tuning$p_value, method = "hochberg") <= 0.05]
+  if(best_MCCs[i,]$method %in% c("ExpVsGamma","InsDens")){
+    est_ess_genes <- results_optimal_tuning$gene[
+      results_optimal_tuning$essential ==1 ]
+    tuning <- NULL
+    if(best_MCCs[i,]$method == c("ExpVsGamma")){
+      tuning_type <- "log2 threshold"
+    }else{
+      tuning_type <- "posterior probability"
+    }
+
+  }else{
+    est_ess_genes <- results_optimal_tuning$gene[
+      p.adjust(results_optimal_tuning$p_value, method = "hochberg") <= 0.05]
+    tuning <- best_MCCs[i,]$tuning
+    tuning_type <- "weight value"
+  }
 
   TP_genes <- est_ess_genes[est_ess_genes %in% ref_ess_gene]
 
@@ -102,7 +116,7 @@ plots <- lapply(1:nrow(best_MCCs), function(i){
     geom_point(color="#B8B8B8", size=0.8) +
     geom_hline(yintercept = mean(plot_data$is_density),
                color="#8C8C8C", size=1)+
-    geom_hline(yintercept = mean(plot_data$is_density)*best_MCCs[i,]$tuning,
+    geom_hline(yintercept = mean(plot_data$is_density)*tuning,
                color="#414141", size=1, linetype="dashed")+
     geom_point(data=plot_data,
                aes(x=start,y=is_density), color=color_fps, size=0.8)+
@@ -125,7 +139,7 @@ plots <- lapply(1:nrow(best_MCCs), function(i){
     xlab("Genomic postion")+
     ylab("Gene-wise insertion density")+
     ggtitle(paste("Subsample size: ", as.integer(best_MCCs[i,]$subsample_size),
-                    ", weight value: ", best_MCCs[i,]$tuning, sep="")) +
+                    ", ", tuning_type,": ", best_MCCs[i,]$tuning, sep="")) +
     theme_minimal() +
     theme(legend.position="bottom",
           plot.title=element_text( face='italic', size=6, hjust = 0.5),
@@ -178,13 +192,31 @@ plots_connis <- annotate_figure(plots_connis,
 save_plot(filename = "./plots/semisyn_performance_ConNIS.pdf",
           plot =plots_connis, dpi =600, base_height = 6, base_asp = 4/4 )
 
-
-#plots for Geometric
-plots_geometric <- ggarrange(
+#plots for Exp vs. Gamma
+plots_expvsgamma <- ggarrange(
   plots[[9]],
   plots[[10]],
   plots[[11]],
   plots[[12]],
+  nrow = 2, ncol=2,
+  labels=LETTERS[1:4],
+  font.label = list(size = 12,color= "#525252"),
+  align='v'
+)
+
+plots_expvsgamma <- annotate_figure(plots_expvsgamma,
+                                    top = text_grob("Exp. vs. Gamma", size = 14))
+
+save_plot(filename = "./plots/semisyn_performance_ExpVsGamma.pdf",
+          plot =plots_expvsgamma, dpi =600, base_height = 6, base_asp = 4/4 )
+
+
+#plots for Geometric
+plots_geometric <- ggarrange(
+  plots[[13]],
+  plots[[14]],
+  plots[[15]],
+  plots[[16]],
   nrow = 2, ncol=2,
   labels=LETTERS[1:4],
   font.label = list(size = 12,color= "#525252"),
@@ -198,12 +230,29 @@ save_plot(filename = "./plots/semisyn_performance_Geometric.pdf",
           plot =plots_geometric, dpi =600, base_height = 6, base_asp = 4/4 )
 
 
+#plots for InsDens
+plots_insdens <- ggarrange(
+  plots[[17]],
+  plots[[18]],
+  plots[[19]],
+  plots[[20]],
+  nrow = 2, ncol=2,
+  labels=LETTERS[1:4],
+  font.label = list(size = 12,color= "#525252"),
+  align='v'
+)
+
+plots_insdens <- annotate_figure(plots_insdens,
+                                  top = text_grob("InsDens", size = 14))
+save_plot(filename = "./plots/semisyn_performance_InsDens.pdf",
+          plot =plots_insdens, dpi =600, base_height = 6, base_asp = 4/4 )
+
 #plots for Tn5Gaps
 plots_tn5gaps <- ggarrange(
-  plots[[13]],
-  plots[[14]],
-  plots[[15]],
-  plots[[16]],
+  plots[[21]],
+  plots[[22]],
+  plots[[23]],
+  plots[[24]],
   nrow = 2, ncol=2,
   labels=LETTERS[1:4],
   font.label = list(size = 12,color= "#525252"),
@@ -211,8 +260,48 @@ plots_tn5gaps <- ggarrange(
 )
 
 plots_tn5gaps <- annotate_figure(plots_tn5gaps,
-                                  top = text_grob("Tn5Gaps", size = 14))
-
+                                 top = text_grob("Tn5Gaps", size = 14))
 save_plot(filename = "./plots/semisyn_performance_Tn5Gaps.pdf",
           plot =plots_tn5gaps, dpi =600, base_height = 6, base_asp = 4/4 )
 
+
+
+plots_comparison <- lapply(subsample_sizes, function(i){
+  p <- ggplot(semi_syn_performances %>% filter(subsample_size==i),
+         aes(x=TP+FP, y=MCC, color=method)) +
+    geom_vline(xintercept = length(ref_ess_gene), linetype="dashed", alpha = 0.7, color="orange") +
+    scale_color_manual(values =
+                         c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
+    geom_line(size=1) +
+    xlab("Number of genes labeled as 'essential'") +
+    theme_minimal() +
+    ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
+    theme(legend.position="bottom",
+          plot.title=element_text( face='italic', size=6, hjust = 0.5),
+          legend.title=element_blank(),
+          legend.text=element_text(size=rel(0.6)),
+          strip.text = element_text(size=rel(0.6)),
+          axis.text.x=element_text(size = rel(0.8)),
+          axis.text.y=element_text(size = rel(0.8)),
+          axis.title.x = element_text(size = rel(0.6)),
+          axis.title.y = element_text(size = rel(0.6))) +
+    coord_cartesian(ylim = c(0, 1))
+
+    p
+})
+
+p_comp_subset_sizes <- ggarrange(
+  plots_comparison[[1]],
+  plots_comparison[[2]],
+  plots_comparison[[3]],
+  plots_comparison[[4]],
+  nrow = 2, ncol=2,
+  labels=LETTERS[1:4],
+  font.label = list(size = 12,color= "#525252"),
+  align='v',
+  common.legend = T,
+  legend = "bottom"
+)
+
+save_plot(filename = "./plots/semisyn_comparison.pdf",
+          plot =p_comp_subset_sizes, dpi =600, base_height = 6, base_asp = 4/4 )
