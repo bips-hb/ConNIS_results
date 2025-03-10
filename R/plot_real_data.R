@@ -51,7 +51,7 @@ p1_mcc_subsetsize <- ggplot(plot_data,
   geom_vline(xintercept = 254,  linetype="dashed", alpha = 0.7, color="orange") +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=N, y=MCC, color=method), size=2) +
   xlab("Number of genes labeled as 'essential'") +
   theme_minimal() +
@@ -70,7 +70,7 @@ p1_tpr_vs_precision <- ggplot(plot_data,
   geom_hline(yintercept = 0, linetype = "dashed", alpha=0.5) +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=TPR, y=Precision, color=method), size=2) +
   xlab("Recall") +
   theme_minimal() +
@@ -139,7 +139,7 @@ p2_mcc_subsetsize <- ggplot(plot_data,
   geom_vline(xintercept = 300,  linetype="dashed", alpha = 0.7, color="orange") +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=N, y=MCC, color=method), size=2) +
   xlab("Number of genes labeled as 'essential'") +
   theme_minimal() +
@@ -158,7 +158,7 @@ p2_tpr_vs_precision <- ggplot(plot_data,
   geom_hline(yintercept = 0, linetype = "dashed", alpha=0.5) +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=TPR, y=Precision, color=method), size=2) +
   xlab("Recall") +
   theme_minimal() +
@@ -226,7 +226,7 @@ p3_mcc_subsetsize <- ggplot(plot_data,
   geom_vline(xintercept = 461, linetype="dashed", alpha = 0.7, color="orange") +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=N, y=MCC, color=method), size=2) +
   xlab("Number of genes labeled as 'essential'") +
   theme_minimal() +
@@ -268,7 +268,7 @@ p3_tpr_vs_precision <- ggplot(plot_data,
   geom_hline(yintercept = 0, linetype = "dashed", alpha=0.5) +
   scale_color_manual(values =
                        c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
-  geom_line(size=1) +
+  geom_line(size=0.75) +
   geom_point(data=plot_data_no_weight, aes(x=TPR, y=Precision, color=method), size=2) +
   xlab("Recall") +
   theme_minimal() +
