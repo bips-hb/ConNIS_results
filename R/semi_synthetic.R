@@ -1,3 +1,4 @@
+library(parallel)
 library(insdens)
 library(tidyverse)
 library(MASS)
@@ -36,19 +37,34 @@ num_ins_per_gene_full <- sapply(1:nrow(gene_data), function(i) {
 # add number of Is per gene based on all IS to data
 gene_data$num_IS_FULL <- num_ins_per_gene_full
 
-# Similar to Goodad (2018) use the the Exp vs Gamma based on ALL IS as reference,
-ExpVsGamma_results <-
-  ExpVsGamma(gene.names = gene_data$gene,
-             gene.starts = gene_data$start,
-             gene.stops = gene_data$end,
-             num.ins.per.gene = gene_data$num_IS_FULL,
-             log2threshold = 12)
+# determine reference vector of "true" essential genes
+# default is the Kaio library; set "Goodall2018" for the high desnity library 
+# of Goodall et al. (2018):
+ref_ess <- "Kaio"
+if(ref_ess == "Kaio"){
+  true_ess <- readRDS("./bw25113_data/essential_genes_kaio.RDS")
+  true_ess <- true_ess[true_ess %in% gene_data$gene]
+}
 
-# Based on log2 threshold =12 determine the "essential" genes (based on the
-# high satrated library of Goddall, 2018). This will be the "truth" to evaluate
-# how the other methods perform if a subsample of the IS are drawn
-ref_ess_gene <-
-  ExpVsGamma_results$gene[which(ExpVsGamma_results$essential==1)]
+if(ref_ess == "Goodall2018"){
+  
+  # Similar to Goodad (2018) use the the Exp vs Gamma based on ALL IS as reference,
+  ExpVsGamma_results <-
+    ExpVsGamma(gene.names = gene_data$gene,
+               gene.starts = gene_data$start,
+               gene.stops = gene_data$end,
+               num.ins.per.gene = gene_data$num_IS_FULL,
+               log2threshold = 12)
+  
+  # Based on log2 threshold =12 determine the "essential" genes (based on the
+  # high satrated library of Goddall, 2018). This will be the "truth" to evaluate
+  # how the other methods perform if a subsample of the IS are drawn
+  ref_ess_gene <-
+    ExpVsGamma_results$gene[which(ExpVsGamma_results$essential==1)]
+  
+  
+}
+
 
 # numbe rof "true" essential genes
 length(ref_ess_gene)
@@ -60,12 +76,12 @@ subsample_sizes <- c(50000, 100000, 200000, 400000)
 
 # Run Binomial, ConNIS, InsDens Geometric and Tn5Gaps on the subsample IS
 # use different weights and psoterior probability thresholds r
-weights <- seq(0.1, 1, 0.1)
+weights <- seq(0.05, 1, 0.05)
 post.prob.thresholds <- c(seq(0.1, 0.9, 0.1), 0.99)
-lof2_thresholds <- 2:12
+log2_thresholds <- 2:12
 
 # start lapply loop over subsample sizes
-subsample_results <- lapply(subsample_sizes, function(subsample_size){
+subsample_results <- lapply(subsample_sizes, FUN =  function(subsample_size){
   print(paste("Running setting with subsample of size", subsample_size))
 
   set.seed(subsample_size)
@@ -113,7 +129,7 @@ subsample_results <- lapply(subsample_sizes, function(subsample_size){
 
 
   print(paste("Start ExpVsGamma at", Sys.time() ))
-  results_ExpVsGamma <- lapply(lof2_thresholds, function(t){
+  results_ExpVsGamma <- lapply(log2_thresholds, function(t){
 
     out <- ExpVsGamma(gene.names = gene_data$gene,
                gene.starts = gene_data$start,
@@ -261,7 +277,7 @@ semi_syn_performances <- lapply(seq_along(subsample_sizes), function(i){
       out <- do.call(rbind, out)
       out
 
-    }else if(names(data_subsample_size[j]) == "results_expvsgamma"){
+    }else if(names(data_subsample_size[j]) == "results_ExpVsGamma"){
 
       method <- "ExpVsGamma"
 
