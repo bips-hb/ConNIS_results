@@ -54,7 +54,7 @@ best_MCCs <- semi_syn_performances %>%
   slice_max(MCC)
 
 # create an index number for the subsample sizes
-best_MCCs$subsample_index_number <- rep(1:4, length(unique(best_MCCs$method)))
+best_MCCs$subsample_index_number <- rep(seq_along(unique(best_MCCs$subsample_size)), length(unique(best_MCCs$method)))
 
 # semi_syn_results is a list of 4 lists (each list for one subsample sizes),
 # each list containing 4 lists (for four methods), each containing 10
@@ -266,7 +266,7 @@ save_plot(filename = "./plots/semisyn_performance_Tn5Gaps.pdf",
 
 
 
-plots_comparison <- lapply(subsample_sizes, function(i){
+plots_comparison_subset_sizes_MCC <- lapply(subsample_sizes, function(i){
   p <- ggplot(semi_syn_performances %>% filter(subsample_size==i),
          aes(x=TP+FP, y=MCC, color=method)) +
     geom_vline(xintercept = length(ref_ess_gene), linetype="dashed", alpha = 0.7, color="orange") +
@@ -290,11 +290,11 @@ plots_comparison <- lapply(subsample_sizes, function(i){
     p
 })
 
-p_comp_subset_sizes <- ggarrange(
-  plots_comparison[[1]],
-  plots_comparison[[2]],
-  plots_comparison[[3]],
-  plots_comparison[[4]],
+p_comp_subset_sizes_MCC <- ggarrange(
+  plots_comparison_subset_sizes_MCC[[1]],
+  plots_comparison_subset_sizes_MCC[[2]],
+  plots_comparison_subset_sizes_MCC[[3]],
+  plots_comparison_subset_sizes_MCC[[4]],
   nrow = 2, ncol=2,
   labels=LETTERS[1:4],
   font.label = list(size = 12,color= "#525252"),
@@ -303,5 +303,46 @@ p_comp_subset_sizes <- ggarrange(
   legend = "bottom"
 )
 
-save_plot(filename = "./plots/semisyn_comparison.pdf",
-          plot =p_comp_subset_sizes, dpi =600, base_height = 6, base_asp = 4/4 )
+save_plot(filename = "./plots/semisyn_comparison_subset_size_MCC.pdf",
+          plot =p_comp_subset_sizes_MCC, dpi =600, base_height = 6, base_asp = 4/4 )
+
+
+plots_comparison_PRC <- lapply(subsample_sizes, function(i){
+  p <- ggplot(semi_syn_performances %>% filter(subsample_size==i),
+              aes(x=TPR, y=Precision, color=method)) +
+    scale_color_manual(values =
+                         c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
+    geom_line(size=1) +
+    xlab("Recall") +
+    theme_minimal() +
+    ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
+    theme(legend.position="bottom",
+          plot.title=element_text( face='italic', size=6, hjust = 0.5),
+          legend.title=element_blank(),
+          legend.text=element_text(size=rel(0.6)),
+          strip.text = element_text(size=rel(0.6)),
+          axis.text.x=element_text(size = rel(0.8)),
+          axis.text.y=element_text(size = rel(0.8)),
+          axis.title.x = element_text(size = rel(0.6)),
+          axis.title.y = element_text(size = rel(0.6))) +
+    coord_cartesian(ylim = c(0, 1))
+  
+  p
+})
+
+p_comp_PRC <- ggarrange(
+  plots_comparison_PRC[[1]],
+  plots_comparison_PRC[[2]],
+  plots_comparison_PRC[[3]],
+  plots_comparison_PRC[[4]],
+  nrow = 2, ncol=2,
+  labels=LETTERS[1:4],
+  font.label = list(size = 12,color= "#525252"),
+  align='v',
+  common.legend = T,
+  legend = "bottom"
+)
+
+save_plot(filename = "./plots/semisyn_comparison_PRC.pdf",
+          plot =p_comp_PRC, dpi =600, base_height = 6, base_asp = 4/4 )
+
