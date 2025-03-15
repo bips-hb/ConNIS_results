@@ -170,7 +170,7 @@ subsample_results <- mclapply(X=subsample_sizes, mc.cores = num_workers ,FUN =fu
   insdens_data$insdens[insdens_data$insdens == 0] <- 0.0000001
 
 
-  filenname <- "./tmpData/MG1655_insdens.csv"
+  filenname <- paste("./tmpData/BW25113_insdens_",subsample_size,".csv",sep="")
   write.csv(x = insdens_data,
             file= filenname,
             row.names = F)
