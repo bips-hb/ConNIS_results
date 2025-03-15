@@ -43,7 +43,7 @@ gene_data$num_IS_FULL <- num_ins_per_gene_full
 reference <- "Kaio"
 if(reference == "Kaio"){
   ref_ess_gene <- readRDS("./bw25113_data/essential_genes_kaio.RDS")
-  ref_ess_gene <- true_ess[true_ess %in% gene_data$gene]
+  ref_ess_gene <- ref_ess_gene[ref_ess_gene %in% gene_data$gene]
 }
 
 if(reference == "Goodall2018"){
