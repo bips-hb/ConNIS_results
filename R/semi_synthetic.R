@@ -38,15 +38,15 @@ num_ins_per_gene_full <- sapply(1:nrow(gene_data), function(i) {
 gene_data$num_IS_FULL <- num_ins_per_gene_full
 
 # determine reference vector of "true" essential genes
-# default is the Kaio library; set "Goodall2018" for the high desnity library 
+# default is the Kaio library; set "Goodall2018" for the high density library 
 # of Goodall et al. (2018):
-ref_ess <- "Kaio"
-if(ref_ess == "Kaio"){
-  true_ess <- readRDS("./bw25113_data/essential_genes_kaio.RDS")
-  true_ess <- true_ess[true_ess %in% gene_data$gene]
+reference <- "Kaio"
+if(reference == "Kaio"){
+  ref_ess_gene <- readRDS("./bw25113_data/essential_genes_kaio.RDS")
+  ref_ess_gene <- true_ess[true_ess %in% gene_data$gene]
 }
 
-if(ref_ess == "Goodall2018"){
+if(reference == "Goodall2018"){
   
   # Similar to Goodad (2018) use the the Exp vs Gamma based on ALL IS as reference,
   ExpVsGamma_results <-
