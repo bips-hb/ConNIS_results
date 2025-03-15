@@ -80,8 +80,10 @@ weights <- seq(0.05, 1, 0.05)
 post.prob.thresholds <- c(seq(0.1, 0.9, 0.1), 0.99)
 log2_thresholds <- 2:12
 
-# start lapply loop over subsample sizes
-subsample_results <- lapply(subsample_sizes, FUN =  function(subsample_size){
+num_workers <- min(c(length(subsample_sizes), detectCores()-1))
+
+# start (mc)lapply loop over subsample sizes
+subsample_results <- mclapply(X=subsample_sizes, mc.cores = num_workers ,FUN =function(subsample_size){
   print(paste("Running setting with subsample of size", subsample_size))
 
   set.seed(subsample_size)
