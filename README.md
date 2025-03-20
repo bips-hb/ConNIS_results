@@ -89,13 +89,15 @@ ConNIS_results/
 
 ## Run simulation study based on synthetic data
 
-The default values for the simulation study are described in Hanke et al., 2025. To (re-)run the simulation study `simulations.R` needs to be called. It sets the parameters of the simulation study and the number of workers for the parallel computation using `parLapply` and than calls three types of scripts within loops over the different parameters:
+The default values for the simulation study are described in Hanke et al., 2025. To (re-)run the simulation study `simulations.R` needs to be called. It sets the parameters of the simulation study and the number of workers for the parallel computation using `parLapply`. It then calls three types of scripts via a loop structure over the different parameters:
 
 * `dataSimulation.R` for generating the synthetic data
 * `<method>Analysis.R` for the analysis of the data 
 * `performance<method>.R` for the performance of the chosen `<method>`
 
-:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R`. If you want to use a fork approach for parallelization (e.g. by `mclapply` or `makeForkCluster` scripts have to be modified individually).
+(the heavy work is done in `<method>Analysis.R` by parallel computation)
+
+:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R` scripts. If you want to use a fork approach for parallelization (e.g. `mclapply` or `makeForkCluster`) scripts have to be modified individually.
 
 ## Run real world analyses
 Run the scripts `realworld_<strain>.R`. Performances will be saved in `performance/`.
@@ -106,7 +108,9 @@ Run the script `semi_synthetic.R`. Performances will be saved in `performance/`.
 :exclamation: Uses `mclapply` and at most `detectCores()-1` workers.
 
 ## Run instability approach
-To calculate the instability values for each parameter/weight/threshold of the six methods run `stabilities_<real_world_or_synthetic>.R` for the real world data and the three synthetic datasets. Next, run `realworld_<strain>.R` (if you haven't done before) and `example_<simu>.R`. These scripts will give the results of three real world data and the three examples of synthetic data which will be used to evaluate the performance of the stability approach. Finally, run `generate_stability_tables.R` to generate an CSV file under `R` with the performances of the instability approach for all six methods and six datasets. 
+First, calculate the instability values for each parameter/weight/threshold of the six methods based on `stabilities_<real_world_or_synthetic>.R` (for three real world data and three synthetic datasets). Next, run `realworld_<strain>.R` (if you haven't done before) and `example_<simu>.R` for results of the three real world data and the three examples of synthetic data. These are used to evaluate the performance of the stability approach. Finally, run `generate_stability_tables.R` to generate an CSV file under `R/` with the performances of the instability approach. 
+
+:exclamation: Uses `PSOCK` for parallelization.
 
 ## Generate plots
 Simply run the script `plots_for_paper.R` to generate all plots under `R/plots`.
