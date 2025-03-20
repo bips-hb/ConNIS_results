@@ -1,11 +1,22 @@
 # Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).
 
+- [Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).](#scripts-and-results-for--connis--by-hanke--harten-and-foraita--2025-)
+  * [Prerequisites](#prerequisites)
+  * [Structure of the repository](#structure-of-the-repository)
+    + [Subdirectories](#subdirectories)
+    + [R scripts](#r-scripts)
+  * [Run simulation study based on synthetic data](#run-simulation-study-based-on-synthetic-data)
+  * [Run real world analyses](#run-real-world-analyses)
+  * [Run semi-synthetic study](#run-semi-synthetic-study)
+  * [Run instability approach](#run-instability-approach)
+  * [Generate plots](#generate-plots)
+
 `R` scripts and performance results based on
 
- * 160 synthetic data settings for method comparison
- * 4 semi-synthetic data settings for method comparison
- * 3 real world data settings for method comparison
- * 3 real world and 3 synthetic data examples for tuning parameter selection
+ * 160 synthetic data settings (for method comparison)
+ * 4 semi-synthetic data settings (for method comparison)
+ * 3 real world data settings (for method comparison)
+ * 3 real world and 3 synthetic data examples (for evaluation of tuning parameter selection)
 
  Seeds have been used for all simulations and subsample drawings.
 
@@ -56,9 +67,9 @@ ConNIS_results/
 * `data_for_synthetic_data_generation/` contains _E. coli_ data as reference for the synthetic data generation in `dataSimulation.R`
 * `performance/` contains performances of all methods for synthetic, semi-synthetic and real world data analyses based on `performanceAnalysis<Method>.R`
 * `plots/` contains plots generated with `plots_<...>.R` based on performances in `performance/`
-* `results/` is used for analyses results of `<method>Anaysis.R`; will be used by `performanceAnalysis<Method>.R`
-* `simulatedData/` is used for generated synthetic data by `dataSimulation.R`; will be used by `<method>Anaysis.R`
-* `tmpData` used by the MCMC part of the _InsDens_ method
+* `results/` is used for analyses results of `<method>Anaysis.R`; is used by `performanceAnalysis<Method>.R`
+* `simulatedData/` is used for generated synthetic data by `dataSimulation.R`; is used by `<method>Anaysis.R`
+* `tmpData` saves intermediate results by the MCMC part of the _InsDens_ method
 
 ### R scripts
 
@@ -76,7 +87,7 @@ ConNIS_results/
 
 
 
-## Simulation study based on synthetic data
+## Run simulation study based on synthetic data
 
 The default values for the simulation study are described in Hanke et al., 2025. To (re-)run the simulation study `simulations.R` needs to be called. It sets the parameters of the simulation study and the number of workers for the parallel computation using `parLapply` and than calls three types of scripts within loops over the different parameters:
 
@@ -84,17 +95,17 @@ The default values for the simulation study are described in Hanke et al., 2025.
 * `<method>Analysis.R` for the analysis of the data 
 * `performance<method>.R` for the performance of the chosen `<method>`
 
-:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R`. If you want to use fork approach for parallelization you can use `mclapply` but you have to modify all scripts by hand.
+:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R`. If you want to use a fork approach for parallelization (e.g. by `mclapply` or `makeForkCluster` scripts have to be modified individually).
 
-## Real world analyses
+## Run real world analyses
 Run the scripts `realworld_<strain>.R`. Performances will be saved in `performance/`.
 
-## Semi-synthetic study 
+## Run semi-synthetic study 
 Run the script `semi_synthetic.R`. Performances will be saved in `performance/`. 
 
 :exclamation: Uses `mclapply` and at most `detectCores()-1` workers.
 
-## Instability approach
+## Run instability approach
 To calculate the instability values for each parameter/weight/threshold of the six methods run `stabilities_<real_world_or_synthetic>.R` for the real world data and the three synthetic datasets. Next, run `realworld_<strain>.R` (if you haven't done before) and `example_<simu>.R`. These scripts will give the results of three real world data and the three examples of synthetic data which will be used to evaluate the performance of the stability approach. Finally, run `generate_stability_tables.R` to generate an CSV file under `R` with the performances of the instability approach for all six methods and six datasets. 
 
 ## Generate plots
