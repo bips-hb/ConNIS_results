@@ -9,6 +9,8 @@
 
  Seeds have been used for all simulations and subsample drawings.
 
+An interactive web app of all results is available under https://connis.bips.eu.
+
 ## Prerequisites
 
 All simulations and analyses were run on a 64 core work station. `R >= 4.3.0` and the following packages are required:
