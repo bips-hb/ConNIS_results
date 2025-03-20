@@ -1,4 +1,5 @@
-# Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).
+# Scripts and results for "ConNIS..." 
+(by Hanke, Harten and Foraita, 2025)
 
 - [Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).](#scripts-and-results-for--connis--by-hanke--harten-and-foraita--2025-)
   * [Prerequisites](#prerequisites)
@@ -114,3 +115,11 @@ First, calculate the instability values for each parameter/weight/threshold of t
 
 ## Generate plots
 Simply run the script `plots_for_paper.R` to generate all plots under `R/plots`.
+
+## References
+* `Barquist, L. et al. The tradis toolkit: sequencing and analysis for dense transposon mutant libraries. Bioinformatics 32, 1109–1111 (2016). URL http://dx.doi.org/ 10.1093/bioinformatics/btw022`
+* `Burger, B. T., Imam, S., Scarborough, M. J., Noguera, D. R. & Donohue, T. J. Combining genome-scale experimental and computational methods to identify essential genes in rhodobacter sphaeroides. mSystems 2 (2017). URL http://dx. doi.org/10.1128/msystems.00015-17`
+* `DeJesus, M. A., Ambadipudi, C., Baker, R., Sassetti, C. & Ioerger, T. R. Transit - a software tool for himar1 tnseq analysis. PLOS Computational Biology 11, e1004401 (2015). URL http://dx.doi.org/10.1371/journal.pcbi.1004401`
+* `Goodall, E. C. A. et al. The essential genome of escherichia coli k-12. mBio 9 (2018). URL http://dx.doi.org/10.1128/mBio.02096-17.`
+* `Goodall, E. C. A. et al. A multiomic approach to defining the essential genome of the globally important pathogen corynebacterium diphtheriae. PLOS Genetics 19, e1010737 (2023). URL http://dx.doi.org/10.1371/journal.pgen.1010737`
+* `Nlebedim, V. U., Chaudhuri, R. R. & Walters, K. Probabilistic identification of bacterial essential genes via insertion density using tradis data with tn5 libraries. Bioinformatics 37, 4343–4349 (2021). URL http://dx.doi.org/10.1093/ bioinformatics/btab508`
