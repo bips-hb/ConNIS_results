@@ -5,8 +5,6 @@ library(ggh4x)
 library(cowplot)
 library(reshape2)
 library(ggpubr)
-library(ggvenn)
-library(venn)
 library(ggridges)
 
 setwd("./R")
@@ -19,6 +17,10 @@ source("plot_real_data.R")
 rm(list=ls())
 source("plot_syn.R")
 
+# Plots for semi-synthetic results
+rm(list=ls())
+source("plot_semisyn.R")
+
 # plot for effect of weighting
 rm(list=ls())
 source("plot_effect_weighting.R")
@@ -26,4 +28,6 @@ source("plot_effect_weighting.R")
 # Plot examples of gene-wise insertion densities for real and simulated data
 rm(list=ls())
 source("plot_real_vs_simulated_data.R")
+
+
 
