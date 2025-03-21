@@ -25,7 +25,7 @@ An interactive web app of all results is available under https://connis.bips.eu.
 
 For an implementation of ConNIS and the instability approach as an `R` package see https://github.com/bips-hb/ConNIS.
 
-## Dependencies
+## Dependencies 
 
 All simulations and analyses were run on a 64 core work station. `R >= 4.3.0` and the following packages are required:
 * `parallel` (base `R`)
@@ -37,6 +37,7 @@ All simulations and analyses were run on a 64 core work station. `R >= 4.3.0` an
 * `cowplot` (CRAN) 
 * `ggridges` (CRAN)
 * `ggh4x` (CRAN)
+* `readr` (CRAN)
 
 ## Structure of the repository
 
