@@ -2,7 +2,7 @@
 (by Hanke, Harten and Foraita, 2025)
 
 - [Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).](#scripts-and-results-for--connis--by-hanke--harten-and-foraita--2025-)
-  * [Prerequisites](#prerequisites)
+  * [Dependencies](#dependencies)
   * [Structure of the repository](#structure-of-the-repository)
     + [Subdirectories](#subdirectories)
     + [R scripts](#r-scripts)
@@ -12,7 +12,7 @@
   * [Run instability approach](#run-instability-approach)
   * [Generate plots](#generate-plots)
 
-`R` scripts and performance results based on
+`R` scripts and performance results are based on
 
  * 160 synthetic data settings (for method comparison)
  * 4 semi-synthetic data settings (for method comparison)
@@ -21,13 +21,13 @@
 
  Seeds have been used for all simulations and subsample drawings.
 
-An interactive web app of all results is available under https://connis.bips.eu.
+An interactive web app with all results is available at https://connis.bips.eu.
 
 For an implementation of ConNIS and the instability approach as an `R` package see https://github.com/bips-hb/ConNIS.
 
 ## Dependencies 
 
-All simulations and analyses were run on a 64 core work station. `R >= 4.3.0` and the following packages are required:
+All simulations and analyses were run on a 64 core workstation. `R >= 4.3.0` and the following packages are required:
 * `parallel` (base `R`)
 * `tidyverse` (CRAN)
 * `MASS` (CRAN)
@@ -93,7 +93,7 @@ ConNIS_results/
 
 ## Run simulation study based on synthetic data
 
-The default values for the simulation study are described in Hanke et al., 2025. To (re-)run the simulation study `simulations.R` needs to be called. It sets the parameters of the simulation study and the number of workers for the parallel computation using `parLapply`. It then calls three types of scripts via a loop structure over the different parameters:
+The default values for the simulation study are described in Hanke et al., 2025. To (re-)run the simulation study, call `simulations.R`. It sets the parameters of the simulation study and the number of workers for the parallel computation using `parLapply`. It then calls three types of scripts via a loop structure over the different parameters:
 
 * `dataSimulation.R` for generating the synthetic data
 * `<method>Analysis.R` for the analysis of the data 
@@ -101,7 +101,7 @@ The default values for the simulation study are described in Hanke et al., 2025.
 
 (the heavy work is done in `<method>Analysis.R` by parallel computation)
 
-:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R` scripts. If you want to use a fork approach for parallelization (e.g. `mclapply` or `makeForkCluster`) scripts have to be modified individually.
+:exclamation: While the number of workers is set in `dataSimulation.R`, the cluster type is set to `PSOCK` in all `<method>Analysis.R` scripts. If you want to use a fork approach for parallelization (e.g. `mclapply` or `makeForkCluster`), scripts have to be modified individually.
 
 ## Run real world analyses
 Run the scripts `realworld_<strain>.R`. Performances will be saved in `performance/`.
