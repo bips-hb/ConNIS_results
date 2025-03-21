@@ -14,7 +14,7 @@ source("./functions.R")
 # Created: 02-Mar-2025 14:09:41
 gene_data <- read_tsv("./bw25113_data/All-genes-of-E.-coli-K-12-substr.-BW25113.txt")
 
-# rename, sort by start and drop Procut and Accession-1
+# rename, sort by start and drop Product and Accession-1
 gene_data <- gene_data[, c(1,3,4)]
 names(gene_data) <- c("gene", "start", "end")
 gene_data <- gene_data %>% arrange(start)
@@ -38,7 +38,7 @@ num_ins_per_gene_full <- sapply(1:nrow(gene_data), function(i) {
 gene_data$num_IS_FULL <- num_ins_per_gene_full
 
 # determine reference vector of "true" essential genes
-# default is the Kaio library; set "Goodall2018" for the high density library 
+# default is the Kaio library; set "Goodall2018" for the high density library
 # of Goodall et al. (2018):
 reference <- "Kaio"
 if(reference == "Kaio"){
@@ -47,7 +47,7 @@ if(reference == "Kaio"){
 }
 
 if(reference == "Goodall2018"){
-  
+
   # Similar to Goodad (2018) use the the Exp vs Gamma based on ALL IS as reference,
   ExpVsGamma_results <-
     ExpVsGamma(gene.names = gene_data$gene,
@@ -55,14 +55,14 @@ if(reference == "Goodall2018"){
                gene.stops = gene_data$end,
                num.ins.per.gene = gene_data$num_IS_FULL,
                log2threshold = 12)
-  
+
   # Based on log2 threshold =12 determine the "essential" genes (based on the
   # high satrated library of Goddall, 2018). This will be the "truth" to evaluate
   # how the other methods perform if a subsample of the IS are drawn
   ref_ess_gene <-
     ExpVsGamma_results$gene[which(ExpVsGamma_results$essential==1)]
-  
-  
+
+
 }
 
 
