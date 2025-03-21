@@ -1,7 +1,7 @@
 # Scripts and results for "ConNIS..." 
-(by Hanke, Harten and Foraita, 2025)
+(by Hanke, M., Harten, T. and Foraita, R. 2025)
 
-- [Scripts and results for "ConNIS..." by Hanke, Harten and Foraita (2025).](#scripts-and-results-for--connis--by-hanke--harten-and-foraita--2025-)
+- [Scripts and results for "ConNIS..."](#scripts-and-results-for--connis-)
   * [Dependencies](#dependencies)
   * [Structure of the repository](#structure-of-the-repository)
     + [Subdirectories](#subdirectories)
@@ -11,6 +11,7 @@
   * [Run semi-synthetic study](#run-semi-synthetic-study)
   * [Run instability approach](#run-instability-approach)
   * [Generate plots](#generate-plots)
+  * [References](#references)
 
 `R` scripts and performance results are based on
 
