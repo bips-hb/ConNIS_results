@@ -1,4 +1,4 @@
-# Scripts and results for "ConNIS..." 
+# Scripts and results for "ConNIS and labeling instability: new statistical methods for improving the detection of essential genes in TraDIS libraries" 
 (by Hanke, M., Harten, T. and Foraita, R. 2025)
 
 - [Scripts and results for "ConNIS..."](#scripts-and-results-for--connis-)
