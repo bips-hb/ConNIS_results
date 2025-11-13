@@ -33,7 +33,7 @@ connis_instabilities <- ConNIS::instabilities(
   genome.length = max(gene_list$end), 
   d = 0.5,
   m = 500,
-  weights = seq(0.1, 1, 0.1),  
+  weights = seq(0.05, 1, 0.05),  
   use.parallelization = TRUE, 
   parallelization.type = "mclapply", 
   numCores = 50,
