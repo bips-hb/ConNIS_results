@@ -894,3 +894,187 @@ get_most_stable <- function(stab_values, tuning_values, reverse = F){
   names(out) <- c("stability", "tuning_value")
   out 
 }
+
+
+# function for plotting venn matrix
+
+plot_pairwise_venn_matrix <- function(
+    sets,
+    colors,
+    global_set         = NULL,
+    global_name        = "Global",
+    global_color       = "#BBBBBB",
+    show_elements      = FALSE,
+    show_percentage    = TRUE,  # <- NEU: Prozentangaben ein/aus
+    stroke_color       = "grey80",
+    venn_set_name_size = 3,
+    venn_text_size     = 3,
+    label_size         = 3,
+    label_row_rel      = 0.08,  # Höhe Kopfzeile (relativ)
+    label_col_rel      = 0.08,  # Breite linke Spalte (relativ)
+    inner_margin       = 1      # Rand um jedes Panel (je kleiner, desto enger)
+) {
+  # --- Checks ---
+  if (!is.list(sets) || is.null(names(sets))) {
+    stop("Die Liste 'sets' muss eine benannte Liste von Vektoren sein.")
+  }
+  
+  n <- length(sets)
+  
+  # Farben prüfen & ausrichten
+  if (is.null(names(colors))) {
+    if (length(colors) != n) {
+      stop("'colors' muss benannt sein ODER die gleiche Länge wie 'sets' haben.")
+    }
+    names(colors) <- names(sets)
+  }
+  if (!all(names(sets) %in% names(colors))) {
+    stop("Für alle Sets muss eine Farbe in 'colors' definiert sein (Namen müssen übereinstimmen).")
+  }
+  colors <- colors[names(sets)]
+  
+  use_global <- !is.null(global_set)
+  
+  empty_plot <- function() {
+    ggplot() +
+      theme_void() +
+      theme(plot.margin = margin(inner_margin, inner_margin, inner_margin, inner_margin))
+  }
+  
+  label_plot_top <- function(lbl) {
+    ggplot() +
+      annotate(
+        "text",
+        x = 0.5, y = 0.5,
+        label = lbl,
+        fontface = "bold",
+        size = label_size
+      ) +
+      xlim(0, 1) + ylim(0, 1) +
+      theme_void() +
+      theme(
+        plot.margin = margin(
+          inner_margin / 2,
+          inner_margin,
+          inner_margin / 4,
+          inner_margin
+        )
+      )
+  }
+  
+  label_plot_left <- function(lbl) {
+    ggplot() +
+      annotate(
+        "text",
+        x = 0.5, y = 0.5,
+        label = lbl,
+        fontface = "bold",
+        size = label_size,
+        angle = 90
+      ) +
+      xlim(0, 1) + ylim(0, 1) +
+      theme_void() +
+      theme(
+        plot.margin = margin(
+          inner_margin,
+          inner_margin / 4,
+          inner_margin,
+          inner_margin / 2
+        )
+      )
+  }
+  
+  # --- einzelnes Venn für (i, j) ---
+  make_pair_plot <- function(i, j) {
+    name_i <- names(sets)[i]
+    name_j <- names(sets)[j]
+    s1 <- sets[[i]]
+    s2 <- sets[[j]]
+    
+    if (!use_global) {
+      all_ids <- unique(c(s1, s2))
+      df <- data.frame(
+        id = all_ids,
+        A  = all_ids %in% s1,
+        B  = all_ids %in% s2
+      )
+      
+      ggplot(df) +
+        ggvenn::geom_venn(
+          aes(A = A, B = B),
+          set_names      = c(A = name_i, B = name_j),
+          fill_color     = c(colors[[name_i]], colors[[name_j]]),
+          show_elements  = show_elements,
+          show_percentage = show_percentage,
+          stroke_color   = stroke_color,
+          set_name_size  = venn_set_name_size,
+          text_size      = venn_text_size
+        ) +
+        theme_void() +
+        theme(
+          plot.margin = margin(inner_margin, inner_margin, inner_margin, inner_margin)
+        ) +
+        coord_fixed()
+      
+    } else {
+      all_ids <- unique(c(s1, s2, global_set))
+      df <- data.frame(
+        id = all_ids,
+        A  = all_ids %in% s1,
+        B  = all_ids %in% s2,
+        C  = all_ids %in% global_set
+      )
+      
+      ggplot(df) +
+        ggvenn::geom_venn(
+          aes(A = A, B = B, C = C),
+          set_names      = c(A = name_i, B = name_j, C = global_name),
+          fill_color     = c(colors[[name_i]], colors[[name_j]], global_color),
+          show_elements  = show_elements,
+          show_percentage = show_percentage,
+          stroke_color   = stroke_color,
+          set_name_size  = venn_set_name_size,
+          text_size      = venn_text_size
+        ) +
+        theme_void() +
+        theme(
+          plot.margin = margin(inner_margin, inner_margin, inner_margin, inner_margin)
+        ) +
+        coord_fixed()
+    }
+  }
+  
+  # --- (n+1)x(n+1) Grid ---
+  plots <- vector("list", (n + 1) * (n + 1))
+  
+  for (row in seq_len(n + 1)) {
+    for (col in seq_len(n + 1)) {
+      idx <- (row - 1L) * (n + 1) + col
+      
+      if (row == 1 && col == 1) {
+        plots[[idx]] <- empty_plot()
+        
+      } else if (row == 1 && col > 1) {
+        plots[[idx]] <- label_plot_top(names(sets)[col - 1L])
+        
+      } else if (col == 1 && row > 1) {
+        plots[[idx]] <- label_plot_left(names(sets)[row - 1L])
+        
+      } else {
+        i <- row - 1L
+        j <- col - 1L
+        if (i == j) {
+          plots[[idx]] <- empty_plot()
+        } else {
+          plots[[idx]] <- make_pair_plot(i, j)
+        }
+      }
+    }
+  }
+  
+  widths  <- c(label_col_rel, rep(1, n))
+  heights <- c(label_row_rel, rep(1, n))
+  
+  wrap_plots(plots, ncol = n + 1) +
+    plot_layout(widths = widths, heights = heights)
+}

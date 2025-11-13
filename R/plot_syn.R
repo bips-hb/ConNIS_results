@@ -175,8 +175,8 @@ p1_rl_max_mcc <- ggplot(
         axis.text.x=element_text(size = rel(0.8)),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
-        axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")
+        axis.title.y = element_text(size = rel(0.6))) #+
+#ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")
 
 
 
@@ -232,18 +232,18 @@ p1_setsize <- ggplot(plot_data %>%mutate(N=TP+FP),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free") +
+  #ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free") +
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(MCC=mean(MCC), N=mean(TP+FP)),
              aes(x=N, y=MCC), colour = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"), size=2)
-  # geom_segment(data = unweigthed_results_no_melt, 
-  #              aes(x = N_min, y = -0.05, xend = N_min, yend = 0.05), size=0.8
-  #              )+
-  # geom_segment(data = unweigthed_results_no_melt, 
-  #              aes(x = N_max, y = -0.05, xend = N_max, yend = 0.05), size=0.8
-  # )
-  
-  
+# geom_segment(data = unweigthed_results_no_melt, 
+#              aes(x = N_min, y = -0.05, xend = N_min, yend = 0.05), size=0.8
+#              )+
+# geom_segment(data = unweigthed_results_no_melt, 
+#              aes(x = N_max, y = -0.05, xend = N_max, yend = 0.05), size=0.8
+# )
+
+
 
 p1_tpr_vs_precision <- ggplot(plot_data, 
                               aes(x=TPR, y=Precision, color=method)) +
@@ -263,7 +263,7 @@ p1_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")+
+  #ggtitle("\nSS1: 200,000 IS and min. 75% insertion-free")+
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(Precision=mean(Precision), TPR=mean(TPR)),
              aes(x=TPR, y=Precision), 
@@ -446,8 +446,8 @@ p2_rl_max_mcc <- ggplot(
         axis.text.x=element_text(size = rel(0.8)),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
-        axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS")
+        axis.title.y = element_text(size = rel(0.6))) #+
+#ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS")
 
 
 
@@ -503,7 +503,7 @@ p2_setsize <- ggplot(plot_data %>%mutate(N=TP+FP),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS") +
+  #ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS") +
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(MCC=mean(MCC), N=mean(TP+FP)),
              aes(x=N, y=MCC), colour = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"), size=2)
@@ -534,7 +534,7 @@ p2_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS")+
+  #ggtitle("\nSS2: 400,000 IS, min. 85% insertion-free and 2% noise IS")+
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(Precision=mean(Precision), TPR=mean(TPR)),
              aes(x=TPR, y=Precision), 
@@ -716,8 +716,8 @@ p3_rl_max_mcc <- ggplot(
         axis.text.x=element_text(size = rel(0.8)),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
-        axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS3: 50,000 IS, min. 85% insertion-free and 2% noise IS")
+        axis.title.y = element_text(size = rel(0.6))) #+
+#ggtitle("\nSS3: 50,000 IS, min. 85% insertion-free and 2% noise IS")
 
 
 
@@ -773,7 +773,7 @@ p3_setsize <- ggplot(plot_data %>%mutate(N=TP+FP),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS3: 50,000 IS and min. 85% insertion-free") +
+  #ggtitle("\nSS3: 50,000 IS and min. 85% insertion-free") +
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(MCC=mean(MCC), N=mean(TP+FP)),
              aes(x=N, y=MCC), colour = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"), size=2)
@@ -784,6 +784,22 @@ p3_setsize <- ggplot(plot_data %>%mutate(N=TP+FP),
 #              aes(x = N_max, y = -0.05, xend = N_max, yend = 0.05), size=0.8
 # )
 
+p3_setsize_window <- ggplot(plot_data %>%mutate(N=TP+FP) %>% filter(method %in% c("ConNIS", "Exp. vs. Gamma", "InsDens")), 
+                            aes(x=N, y=!!sym(input$metric), color=method)) +
+  geom_vline(xintercept = mean(plot_data$TP+plot_data$FN), color="orange",linetype="dashed", alpha=0.7)+
+  scale_color_manual(values =
+                       c("#117733", "#CC6677","#DDCC77" )) +
+  geom_smooth(se=FALSE, size = 1) +
+  coord_cartesian(ylim=c(0.7,0.85), xlim = c(250,650))+
+  theme_minimal() +
+  guides(color="none") +
+  geom_point(data = unweigthed_results_no_melt %>% filter(method %in% c("ConNIS", "Exp. vs. Gamma", "InsDens")) %>%
+               group_by(method) %>% reframe(MCC=mean(MCC), N=mean(TP+FP)),
+             aes(x=N, y=MCC), colour = c("#117733", "#CC6677","#DDCC77"), size=2) +
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_blank()
+        )
+  
 
 
 p3_tpr_vs_precision <- ggplot(plot_data, 
@@ -804,7 +820,7 @@ p3_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS3: 50,000 IS and min. 85% insertion-free")+
+  #ggtitle("\nSS3: 50,000 IS and min. 85% insertion-free")+
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(Precision=mean(Precision), TPR=mean(TPR)),
              aes(x=TPR, y=Precision), 
@@ -990,8 +1006,8 @@ p4_rl_max_mcc <- ggplot(
         axis.text.x=element_text(size = rel(0.8)),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
-        axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots")
+        axis.title.y = element_text(size = rel(0.6))) #+
+#ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots")
 
 
 
@@ -1047,7 +1063,7 @@ p4_setsize <- ggplot(plot_data %>%mutate(N=TP+FP),
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots") +
+  #ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots") +
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(MCC=mean(MCC), N=mean(TP+FP)),
              aes(x=N, y=MCC), colour = c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0"), size=2)
@@ -1078,7 +1094,7 @@ p4_tpr_vs_precision <- ggplot(plot_data,
         axis.text.y=element_text(size = rel(0.8)),
         axis.title.x = element_text(size = rel(0.6)),         
         axis.title.y = element_text(size = rel(0.6))) +
-  ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots")+
+  #ggtitle("\nSS4: 200,000 IS, min. 80% insertion-free and 25 cold spots")+
   geom_point(data = unweigthed_results_no_melt %>%
                group_by(method) %>% reframe(Precision=mean(Precision), TPR=mean(TPR)),
              aes(x=TPR, y=Precision), 
@@ -1089,54 +1105,102 @@ p4_tpr_vs_precision <- ggplot(plot_data,
 
 
 
-  plots_syn_results_mcc_subsetsize <- 
-    ggarrange(
-      p1_setsize,
-      p2_setsize,
-      p3_setsize,
-      p4_setsize,
-      nrow = 2, ncol=2,
-      labels=LETTERS[1:4],
-      font.label = list(size = 12,color= "#525252"),
-      align='v', 
-      common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-    )
+plots_syn_results_mcc_subsetsize <- 
+  ggarrange(
+    p1_setsize,
+    p2_setsize,
+    p3_setsize,
+    p4_setsize,
+    nrow = 2, ncol=2,
+    labels=LETTERS[1:4],
+    font.label = list(size = 12,color= "#525252"),
+    align='v', 
+    common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
+  )
 
+
+plots_syn_results_tpr_vs_precision <- 
+  ggarrange(
+    p1_tpr_vs_precision,
+    p2_tpr_vs_precision,
+    p3_tpr_vs_precision,
+    p4_tpr_vs_precision,
+    nrow = 2, ncol=2,
+    labels=LETTERS[1:4],
+    font.label = list(size = 12,color= "#525252"),
+    align='v', 
+    common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
+  )
+
+plots_syn_best_mcc <- 
+  ggarrange(
+    p1_rl_max_mcc,
+    p2_rl_max_mcc,
+    p3_rl_max_mcc,
+    p4_rl_max_mcc,
+    nrow = 2, ncol=2,
+    labels=LETTERS[1:4],
+    font.label = list(size = 12,color= "#525252"),
+    align='v', 
+    common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
+  )
+
+
+save_plot(filename = "./plots/syn_results_mcc_subsetsize.pdf",
+          plot =plots_syn_results_mcc_subsetsize, dpi =600, base_height = 6, base_asp = 4/4 )
+
+save_plot(filename = "./plots/syn_results_tpr_vs_precision.pdf",
+          plot =plots_syn_results_tpr_vs_precision, dpi =600, base_height = 6, base_asp = 4/4 )
+
+save_plot(filename = "./plots/syn_results_best_mcc.pdf",
+          plot =plots_syn_best_mcc, dpi =600, base_height = 6, base_asp = 4/4 )
+
+
+top_plot <- ggarrange(p1_setsize + rremove("legend.title") , 
+                      p1_tpr_vs_precision + rremove("legend.title"),
+                      nrow = 1, ncol=2,
+                      align='v', legend = "none"
+) 
+
+middle_plot <- ggarrange(p3_setsize + rremove("legend.title") , 
+                         p3_tpr_vs_precision + rremove("legend.title"),
+                         nrow = 1, ncol=2,
+                         align='v', legend = "none"
+) 
+
+
+bottom_plot <- ggarrange(p4_setsize + rremove("legend.title") , 
+                         p4_tpr_vs_precision + rremove("legend.title"),
+                         nrow = 1, ncol=2,
+                         align='v', legend = "none"
+) 
+
+top_plot <- annotate_figure(top_plot, top=text_grob("\nSDE: 200,000 IS, sinusoidally distributed, essential genes with insertion free sequence >=75%", face = "italic", size = 6))
+middle_plot <- annotate_figure(middle_plot, top=text_grob("\nSDE: 50,000 IS, sinusoidally distributed, 2% noise, essential genes with insertion free sequence >=85%", face = "italic", size = 6))
+bottom_plot <- annotate_figure(bottom_plot, top=text_grob("\nSDE: 200,000 IS, uniformaly distributed, 25 cold spots, essential genes with insertion free sequence >=80%", face = "italic", size = 6))
+
+
+plot_syn_mcc_prc <- ggarrange(
+  top_plot,
+  middle_plot,
+  bottom_plot,
+  nrow = 3, ncol=1,
+  align='v', 
+  labels=c("A", "B", "C"),
+  font.label = list(size = 10,color= "#525252"),
+  common.legend = T, 
+  legend.grob = get_legend(p1_setsize), 
+  legend = "bottom"
+)
   
-  plots_syn_results_tpr_vs_precision <- 
-    ggarrange(
-      p1_tpr_vs_precision,
-      p2_tpr_vs_precision,
-      p3_tpr_vs_precision,
-      p4_tpr_vs_precision,
-      nrow = 2, ncol=2,
-      labels=LETTERS[1:4],
-      font.label = list(size = 12,color= "#525252"),
-      align='v', 
-      common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-    )
-  
-  plots_syn_best_mcc <- 
-    ggarrange(
-      p1_rl_max_mcc,
-      p2_rl_max_mcc,
-      p3_rl_max_mcc,
-      p4_rl_max_mcc,
-      nrow = 2, ncol=2,
-      labels=LETTERS[1:4],
-      font.label = list(size = 12,color= "#525252"),
-      align='v', 
-      common.legend = T, legend = "bottom", legend.grob = get_legend(p4_tpr_vs_precision)
-    )
+
+
+save_plot(filename = "./plots/syn_data.pdf",
+          plot =plot_syn_mcc_prc, dpi =600, base_height = 9.5*(3/4), base_asp = (2/3))
+
+
+save_plot(filename = "./plots/window_syn_data.pdf",
+          plot =p3_setsize_window, dpi =600, base_height = 1.5, base_asp = 1.2)
   
   
-  save_plot(filename = "./plots/syn_results_mcc_subsetsize.pdf",
-            plot =plots_syn_results_mcc_subsetsize, dpi =600, base_height = 6, base_asp = 4/4 )
-  
-  save_plot(filename = "./plots/syn_results_tpr_vs_precision.pdf",
-            plot =plots_syn_results_tpr_vs_precision, dpi =600, base_height = 6, base_asp = 4/4 )
-  
-  save_plot(filename = "./plots/syn_results_best_mcc.pdf",
-            plot =plots_syn_best_mcc, dpi =600, base_height = 6, base_asp = 4/4 )
-    
   

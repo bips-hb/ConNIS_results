@@ -270,12 +270,13 @@ plots_comparison_subset_sizes_MCC <- lapply(subsample_sizes, function(i){
   p <- ggplot(semi_syn_performances %>% filter(subsample_size==i),
          aes(x=TP+FP, y=MCC, color=method)) +
     geom_vline(xintercept = length(ref_ess_gene), linetype="dashed", alpha = 0.7, color="orange") +
+    geom_hline(yintercept = 0, color="black",linetype="dashed", alpha=0.5) +
     scale_color_manual(values =
                          c("#6699CC", "#117733", "#CC6677", "#7f7f7f", "#DDCC77",  "#9651A0")) +
     geom_line(size=1) +
     xlab("Number of genes labeled as 'essential'") +
     theme_minimal() +
-    ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
+    #ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
     theme(legend.position="bottom",
           plot.title=element_text( face='italic', size=6, hjust = 0.5),
           legend.title=element_blank(),
@@ -315,7 +316,7 @@ plots_comparison_PRC <- lapply(subsample_sizes, function(i){
     geom_line(size=1) +
     xlab("Recall") +
     theme_minimal() +
-    ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
+    #ggtitle(paste("Subsample size: ", as.integer(i), sep="")) +
     theme(legend.position="bottom",
           plot.title=element_text( face='italic', size=6, hjust = 0.5),
           legend.title=element_blank(),
@@ -346,3 +347,35 @@ p_comp_PRC <- ggarrange(
 save_plot(filename = "./plots/semisyn_comparison_PRC.pdf",
           plot =p_comp_PRC, dpi =600, base_height = 6, base_asp = 4/4 )
 
+
+
+top_plot <- ggarrange(plots_comparison_subset_sizes_MCC[[1]] + rremove("legend.title") , 
+                         plots_comparison_PRC[[1]] + rremove("legend.title"),
+                         nrow = 1, ncol=2,
+                         align='v', legend = "none"
+) 
+
+
+bottom_plot <- ggarrange(plots_comparison_subset_sizes_MCC[[4]] + rremove("legend.title") , 
+                         plots_comparison_PRC[[4]] + rremove("legend.title"),
+                         nrow = 1, ncol=2,
+                         align='v', legend = "none"
+) 
+
+
+top_plot <- annotate_figure(top_plot, top=text_grob("\nSubsample size: 50,000", face = "italic", size = 6))
+bottom_plot <- annotate_figure(bottom_plot, top=text_grob("\nSubsample size: 400,000", face = "italic", size = 6))
+
+output_plot <- ggarrange(top_plot, 
+                         bottom_plot,
+                         nrow = 2, ncol=1,
+                         align='v', 
+                         labels=c("A", "B"),
+                         font.label = list(size = 10,color= "#525252"),
+                         common.legend = T, 
+                         legend.grob = get_legend(plots_comparison_PRC[[1]]), 
+                         legend = "bottom"
+) 
+
+save_plot(filename = "./plots/semisynthetic_data.pdf",
+          plot =output_plot, dpi =600, base_height = 9.5*(2/4), base_asp = (2/2))
