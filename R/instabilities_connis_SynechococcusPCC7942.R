@@ -2,12 +2,12 @@ library(tidyverse)
 library(gmp)
 library(ConNIS)
 
-data_t0 <- readxl::read_xlsx("~/Downloads/pnas.1519220112.sd01.xlsx")
+data_t0 <- readxl::read_xlsx("./PCC7942/pnas.1519220112.sd01.xlsx")
 IS_pos_t0 <- sort(unique(data_t0$position))
-data_t6 <- readxl::read_xlsx("~/Downloads/pnas.1519220112.sd02.xlsx")
+data_t6 <- readxl::read_xlsx("./PCC7942/pnas.1519220112.sd02.xlsx")
 IS_pos_t6 <- sort(unique(data_t6$position))
 
-gene_list <- readxl::read_xlsx("~/Downloads/pnas.1519220112.sd03.xlsx")
+gene_list <- readxl::read_xlsx("./PCC7942/pnas.1519220112.sd03.xlsx")
 gene_list <- gene_list %>% filter(chromosome == "chromosome")
 
 
