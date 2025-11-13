@@ -4,6 +4,8 @@ library(ConNIS)
 
 # Data from https://www.pnas.org/doi/full/10.1073/pnas.1519220112
 
+setwd("./R")
+
 data_t0 <- readxl::read_xlsx("./PCC7942/pnas.1519220112.sd01.xlsx")
 IS_pos_t0 <- sort(unique(data_t0$position))
 data_t6 <- readxl::read_xlsx("./PCC7942/pnas.1519220112.sd02.xlsx")
