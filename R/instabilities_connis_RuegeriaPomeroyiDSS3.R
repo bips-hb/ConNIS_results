@@ -82,7 +82,7 @@ rm(i)
 #   weights = seq(0.05, 1, 0.05),
 #   use.parallelization = TRUE,
 #   parallelization.type = "mclapply",
-#   numCores = 50,
+#   numCores = 25,
 #   seed = 2025,
 #   set.rng = "L'Ecuyer-CMRG"
 # )
@@ -126,7 +126,7 @@ rm(i)
 #   weights = seq(0.05, 1, 0.05),
 #   use.parallelization = TRUE,
 #   parallelization.type = "mclapply",
-#   numCores = 50,
+#   numCores = 25,
 #   seed = 2025,
 #   set.rng = "L'Ecuyer-CMRG"
 # )
@@ -170,7 +170,7 @@ connis_instabilities <- ConNIS::instabilities(
   weights = seq(0.05, 1, 0.05),
   use.parallelization = TRUE,
   parallelization.type = "mclapply",
-  numCores = 50,
+  numCores = 25,
   seed = 2025,
   set.rng = "L'Ecuyer-CMRG"
 )
@@ -213,7 +213,7 @@ connis_instabilities <- ConNIS::instabilities(
   weights = seq(0.05, 1, 0.05),
   use.parallelization = TRUE,
   parallelization.type = "mclapply",
-  numCores = 50,
+  numCores = 25,
   seed = 2025,
   set.rng = "L'Ecuyer-CMRG"
 )
@@ -256,7 +256,7 @@ connis_instabilities <- ConNIS::instabilities(
   weights = seq(0.05, 1, 0.05),
   use.parallelization = TRUE,
   parallelization.type = "mclapply",
-  numCores = 50,
+  numCores = 25,
   seed = 2025,
   set.rng = "L'Ecuyer-CMRG"
 )
