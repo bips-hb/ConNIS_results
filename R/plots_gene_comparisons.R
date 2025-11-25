@@ -114,6 +114,8 @@ gene_data <- lapply(1:nrow(all_genes_BW25113), function(i){
          gene = gene,
          gene_start = gene_i_start,
          gene_end = gene_i_end,
+         gene_start_non_trimmed = all_genes_BW25113$gene_start[i],
+         gene_end_non_trimmed = all_genes_BW25113$gene_end[i],
          length = gene_i_end - gene_i_start +1,
          num_ins = num_ins,
          nondis = max(diff(unique(c(start_is, IS_gene_i, end_is)))-1)/
@@ -514,10 +516,16 @@ genes_sorted <- gene_data$gene[gene_data$gene %in% genes_found_union_methods]
 
 comparison_genes_found <- 
   tibble(gene = genes_sorted,
+         entry = gene_data$entry[gene_data$gene %in% genes_sorted],
+         gene_start = gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_end = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_length = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted] - 
+           gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
          Binomial = genes_sorted %in% selected_genes_binomial[[3]],
          ConNIS = genes_sorted %in% selected_genes_connis[[3]],
          ExpVsGamma = genes_sorted %in% selected_genes_expvsgamma,
          Geometric = genes_sorted %in% selected_genes_geometric[[3]],
+         InsDens = genes_sorted %in% selected_genes_insdens,
          Tn5Gaps = genes_sorted %in% selected_genes_tn5gaps[[3]])
 
 
@@ -531,12 +539,6 @@ comparison_genes_found <-
   )
 
 write.csv(comparison_genes_found, file = "table_selected_genes_tuned_EcoliBW25113.csv")
-
-which(comparison_genes_found$ConNIS == TRUE & 
-        comparison_genes_found$Binomial == FALSE &
-        comparison_genes_found$ExpVsGamma == FALSE &
-        comparison_genes_found$Geometric == FALSE &
-        comparison_genes_found$Tn5Gaps == FALSE)
 
 # nadD only in ConNIS, an essential gene  https://journals.asm.org/doi/10.1128/mbio.00747-13#:~:text=The%20respective%20enzymes%2C%20NaMN%20adenylyltransferase,tuberculosis%20(23–25).
 
@@ -643,10 +645,10 @@ save_plot(filename = "./plots/venns_EcoliBW25113.pdf",
 
 
 
-
+rm(list=ls())
 ######## ECOLI MG1655 ############
 
-
+source("functions.R")
 # https://journals.asm.org/doi/10.1128/aac.00452-24
 # https://genomics.lbl.gov/supplemental/rbarseq/html/Keio/
 
@@ -720,10 +722,12 @@ gene_data <- lapply(1:nrow(all_genes_MG1655), function(i){
     end_is <- max(IS_gene_i)
   }
   
-  tibble(entry = all_genes_MG1655$locusId[i],
+  tibble(entry = all_genes_MG1655$locus_tag[i],
          gene = gene,
          gene_start = gene_i_start,
          gene_end = gene_i_end,
+         gene_start_non_trimmed = all_genes_MG1655$gene_start[i],
+         gene_end_non_trimmed = all_genes_MG1655$gene_end[i],
          length = gene_i_end - gene_i_start +1,
          num_ins = num_ins,
          nondis = max(diff(unique(c(start_is, IS_gene_i, end_is)))-1)/
@@ -1124,10 +1128,16 @@ genes_sorted <- gene_data$gene[gene_data$gene %in% genes_found_union_methods]
 
 comparison_genes_found <- 
   tibble(gene = genes_sorted,
+         entry = gene_data$entry[gene_data$gene %in% genes_sorted],
+         gene_start = gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_end = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_length = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted] - 
+           gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
          Binomial = genes_sorted %in% selected_genes_binomial[[3]],
          ConNIS = genes_sorted %in% selected_genes_connis[[3]],
          ExpVsGamma = genes_sorted %in% selected_genes_expvsgamma,
          Geometric = genes_sorted %in% selected_genes_geometric[[3]],
+         InsDens = genes_sorted %in% selected_genes_insdens,
          Tn5Gaps = genes_sorted %in% selected_genes_tn5gaps[[3]])
 
 
@@ -1184,9 +1194,13 @@ save_plot(filename = "./plots/venns_EcoliMG1655.pdf",
 
 
 
+rm(list=ls())
+
+
+
 
 ######## Typhimurium 14028S #######
-
+source("functions.R")
 # https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2017.01723/full#supplementary-material
 # https://genomics.lbl.gov/supplemental/rbarseq/html/Keio/
 # https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0099820#pone-0099820-t001
@@ -1293,6 +1307,8 @@ gene_data <- lapply(1:nrow(all_genes_14028S), function(i){
          gene = gene,
          gene_start = gene_i_start,
          gene_end = gene_i_end,
+         gene_start_non_trimmed = all_genes_14028S$gene_start[i],
+         gene_end_non_trimmed = all_genes_14028S$gene_end[i],
          length = gene_i_end - gene_i_start +1,
          num_ins = num_ins,
          nondis = max(diff(unique(c(start_is, IS_gene_i, end_is)))-1)/
@@ -1692,10 +1708,16 @@ genes_sorted <- gene_data$gene[gene_data$gene %in% genes_found_union_methods]
 
 comparison_genes_found <- 
   tibble(gene = genes_sorted,
+         entry = gene_data$entry[gene_data$gene %in% genes_sorted],
+         gene_start = gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_end = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted],
+         gene_length = gene_data$gene_end_non_trimmed[gene_data$gene %in% genes_sorted] - 
+           gene_data$gene_start_non_trimmed[gene_data$gene %in% genes_sorted],
        Binomial = genes_sorted %in% selected_genes_binomial[[3]],
        ConNIS = genes_sorted %in% selected_genes_connis[[1]],
        ExpVsGamma = genes_sorted %in% selected_genes_expvsgamma,
        Geometric = genes_sorted %in% selected_genes_geometric[[1]],
+       InsDens = genes_sorted %in% selected_genes_insdens,
        Tn5Gaps = genes_sorted %in% selected_genes_tn5gaps[[3]])
 
 

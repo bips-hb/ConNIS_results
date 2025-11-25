@@ -363,8 +363,8 @@ bottom_plot <- ggarrange(plots_comparison_subset_sizes_MCC[[4]] + rremove("legen
 ) 
 
 
-top_plot <- annotate_figure(top_plot, top=text_grob("\nSubsample size: 50,000", face = "italic", size = 6))
-bottom_plot <- annotate_figure(bottom_plot, top=text_grob("\nSubsample size: 400,000", face = "italic", size = 6))
+top_plot <- annotate_figure(top_plot, top=text_grob("\nSubsample size: 50,000 IS", face = "italic", size = 6))
+bottom_plot <- annotate_figure(bottom_plot, top=text_grob("\nSubsample size: 400,000 IS", face = "italic", size = 6))
 
 output_plot <- ggarrange(top_plot, 
                          bottom_plot,
@@ -379,3 +379,35 @@ output_plot <- ggarrange(top_plot,
 
 save_plot(filename = "./plots/semisynthetic_data.pdf",
           plot =output_plot, dpi =600, base_height = 9.5*(2/4), base_asp = (2/2))
+
+
+top_plot_supplement <- ggarrange(plots_comparison_subset_sizes_MCC[[2]] + rremove("legend.title") , 
+                      plots_comparison_PRC[[2]] + rremove("legend.title"),
+                      nrow = 1, ncol=2,
+                      align='v', legend = "none"
+) 
+
+
+bottom_plot_supplement <- ggarrange(plots_comparison_subset_sizes_MCC[[3]] + rremove("legend.title") , 
+                         plots_comparison_PRC[[3]] + rremove("legend.title"),
+                         nrow = 1, ncol=2,
+                         align='v', legend = "none"
+) 
+
+
+top_plot_supplement <- annotate_figure(top_plot_supplement, top=text_grob("\nSubsample size: 100,000 IS", face = "italic", size = 6))
+bottom_plot_supplement <- annotate_figure(bottom_plot_supplement, top=text_grob("\nSubsample size: 200,000 IS", face = "italic", size = 6))
+
+output_plot_supplement <- ggarrange(top_plot_supplement, 
+                         bottom_plot_supplement,
+                         nrow = 2, ncol=1,
+                         align='v', 
+                         labels=c("A", "B"),
+                         font.label = list(size = 10,color= "#525252"),
+                         common.legend = T, 
+                         legend.grob = get_legend(plots_comparison_PRC[[1]]), 
+                         legend = "bottom"
+) 
+
+save_plot(filename = "./plots/semisynthetic_data_supplement.pdf",
+          plot =output_plot_supplement, dpi =600, base_height = 9.5*(2/4), base_asp = (2/2))
