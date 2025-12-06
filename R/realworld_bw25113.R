@@ -100,7 +100,7 @@ performances_read_count_thresholds <-
         
         if(gene_i_end > max(IS_gene_i) |
            length(IS_gene_i)==0){
-          end_is <- gene_i_end[i]+1
+          end_is <- gene_i_end+1
         }else{
           end_is <- max(IS_gene_i)
         }

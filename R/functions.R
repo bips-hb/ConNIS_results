@@ -1078,3 +1078,53 @@ plot_pairwise_venn_matrix <- function(
   wrap_plots(plots, ncol = n + 1) +
     plot_layout(widths = widths, heights = heights)
 }
+
+
+min_instability <- function(tuning, instability) {
+  if (!is.numeric(tuning) | !is.numeric(instability)) {
+    stop("Both 'tuning' and 'instability' must be numeric.")
+  }
+  if (length(tuning) != length(instability)) {
+    stop("'tuning' and 'instability' must have the same length.")
+  }
+  
+  n <- length(instability)
+  
+  # search for peak? only if instability rises after first instability value
+  # (we want to exclude cases where instability is low because of alle negatives)
+  use_peak_logic <- (n >= 2 & instability[2] > instability[1])
+  
+  # Falls wir keine Peaklogik verwenden (oder es zu wenig Punkte gibt):
+  if (!use_peak_logic | n < 3L) {
+    idx <- which.min(instability)        # erster Index des Minimums
+    return(tuning[idx])                  # zugehöriger tuning-Wert
+  }
+  
+  # search for peak (first i with instability[i-1] < instability[i] > instability[i+1])
+  peak_idx <- NA
+  for (i in 2:(n - 1)) {
+    if (instability[i] > instability[i - 1] &&
+        instability[i] > instability[i + 1]) {
+      peak_idx <- i
+      break
+    }
+  }
+  
+  # if no Peak was found we use the global min
+  if (is.na(peak_idx)) {
+    idx <- which.min(instability)
+    return(tuning[idx])
+  }
+  
+  # 3. min after peak 
+  start_idx <- peak_idx + 1
+  if (start_idx > n) {        
+    start_idx <- n
+  }
+  
+  sub_inst <- instability[start_idx:n]
+  rel_min_idx <- which.min(sub_inst)     
+  global_min_idx <- start_idx + rel_min_idx - 1
+  
+  return(tuning[global_min_idx])
+}
